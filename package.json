@@ -1,0 +1,22 @@
+{
+  "name": "vtq-tpl",
+  "version": "0.0.1",
+  "description": "Vnjson text quest template",
+  "main": "gulpfile.js",
+  "scripts": {},
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "scenes-to-json": "^0.6.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vnjson/vtq-tpl.git"
+  },
+  "author": "bakakasin@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vnjson/vtq-tpl/issues"
+  },
+  "homepage": "https://github.com/vnjson/vtq-tpl#readme",
+  "dependencies": {}
+}
