@@ -1,2 +1,3 @@
-app: Простой текстовый квест
+name: Простой текстовый квест
 version: 0.0.1
+entry: volume_1.chapter_1
