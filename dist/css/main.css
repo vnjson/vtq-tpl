@@ -1,0 +1,83 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html, body{
+	user-select: none;
+
+}
+
+
+.wrapper{
+
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #030623;
+	font-size: 16px;
+}
+
+
+/**
+ * screens
+ */
+
+
+.screen{
+	width: 60%;
+	height: 60vh;
+	border: 2.5px solid darkcyan;
+	background-color: #032B36;
+	padding: 10px;
+}
+.scene{
+	display: none;
+}
+/**
+ * main-menu
+ */
+
+.screen__main-menu{
+
+}
+
+/**
+ * stream
+ */
+.screen__stream{
+
+}
+
+.screen__text-box{
+
+	width: 100%;
+	height: 20rem;
+	background-color: darkcyan;
+	font-size: 1.5em;
+	color: skyblue;
+	cursor: pointer;
+	padding: 3%;
+}
+
+.screen__game-menu{
+	padding: 3%;
+}
+
+.screen__menu-item{
+	cursor: pointer;
+	margin-bottom: 10px;
+	padding: 5px;
+	color: skyblue;
+	font-size: 1.4em;
+	background-color: rgba(170, 230, 170, 0.5);
+}
+/**
+ * items
+ */
+.screen__items{
+
+}
