@@ -29,9 +29,11 @@ this.on('jump', pathname=>{
 
 function menuVnjson(){
 
-$('.screen__game-menu').show();
 
 function menu (menuObj){
+$('.screen__game-menu').html('');	
+$('.screen__game-menu').show();
+
 
 	for(var [label, menuItem ] of Object.entries(menuObj)){
 		
@@ -62,26 +64,36 @@ $( ".screen__game-menu" ).on( "click", ".screen__menu-item", e=>{
 
 function screenVnjson(){
 
-	const prevScreen = false;
+	var prevScreen;
 
 	this.on('screen', function (screenName){
-		if(prevScreen){		
+		if(prevScreen){	
 			$(`.screen__${prevScreen}`).hide();
 		}
-		$(`.screen__${screenName}`).show();
-
+		$(`.screen__${screenName}`).css('display', 'flex');
+			prevScreen = screenName;
 	})
 }
 
 function printVnjson (){
-	this.on('$', function (reply){
+
+	this.on('$', reply=>{
 		$('.screen__text-box').html(reply)
 	});
 
-	this.on('character', (chracter, reply)=>{
-		console.log(chracter, reply)
+	this.on('character', (character, reply)=>{
+		$('.screen__text-box').html(`<p style="color:${character.color}">${character.text}</p>`);
+		$('.screen__text-box').append(`<p style="color:${character.replyColor}">${reply}</p>`);
+
 	})
 }
+
+function alertVnjson (){
+	this.on('alert', _=>{
+		$('.screen').css({border: '1px solid red'})
+	})
+}
+
 
 function debugVnjson (){
 	this.on('*', event=>{
@@ -90,9 +102,6 @@ function debugVnjson (){
 		}
 	});
 
-	this.on('label.end', _=>{
-		console.warn('label is end')
-	})
 }
 
 const vnjs = new Vnjson();
@@ -104,7 +113,7 @@ vnjs.use(menuVnjson)
 vnjs.use(screenVnjson);
 
 vnjs.use(printVnjson);
-
+vnjs.use(alertVnjson)
 //vnjs.emit('screen', 'stream')
 
 
@@ -115,15 +124,21 @@ $.getJSON("./scenes/vn.json",  package=>{
 		vnjs.use(debugVnjson)
 	}
  	vnjs.setTree(TREE);
- 	vnjs.emit('jump', entry)
 
- 	vnjs.on('init', scene=>{
- 		vnjs.exec();
- 	})
+ 	vnjs.emit('screen', 'main-menu')
+
+	$('#newGame').on('mousedown', e=>{
+		vnjs.emit('jump', entry)
+	})
+
 
 
  });
 
+
+vnjs.on('init', scene=>{
+ 		vnjs.exec();
+})
 
 $('.screen__text-box').on('mousedown', e=>{
 		vnjs.next()

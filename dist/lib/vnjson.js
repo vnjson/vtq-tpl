@@ -79,7 +79,14 @@ class Vnjson {
 		}).pop();
 	}
 	getCurrentLabelBody (){
-		return this.TREE[this.current.sceneName][this.current.labelName];
+		let labelBody = this.TREE[this.current.sceneName][this.current.labelName];
+		if(labelBody){
+			return labelBody;
+		}
+		else{
+			console.warn('{ menu } or { jump } leads nowhere');
+			return [''];
+		}
 	}
 	/**
 	 * Get a character that has already been loaded
@@ -164,7 +171,7 @@ class Vnjson {
 		if(this.getCurrentLabelBody().length-2<this.current.index){
 			
 			this.current.index = this.current.index;
-			this.emit('label.end')
+			console.warn(`No way out of the label [ ${this.current.labelName} ]`)
 		}else{
 			this.current.index++;
 			this.exec();

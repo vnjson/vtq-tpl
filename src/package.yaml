@@ -1,5 +1,5 @@
 name: Простой текстовый квест
 version: 0.0.1
-debug: false
+debug: true
 entry: volume_1.chapter_1
 

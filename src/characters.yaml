@@ -1,2 +1,10 @@
+- name: k
+  text: Ковальски
+  color: '#f26f11'
+  replyColor: '#cfaf99'
+
+
 - name: al
   text: Алиса
+  color: '#a153b5'
+  replyColor: '#b28fba'
