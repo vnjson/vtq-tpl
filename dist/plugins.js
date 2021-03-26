@@ -3,6 +3,7 @@
 function jumpVnjson(){
 
 
+
 this.on('jump', pathname=>{
 
 				let path = pathname.split('.');
@@ -10,6 +11,7 @@ this.on('jump', pathname=>{
 				this.current.index = 0;
 				//label
 				if(!/\./i.test(pathname)){
+					
 					this.current.labelName = path[0];
 					this.emit('init', false)
 				}
@@ -151,27 +153,79 @@ function infoVnjson (){
 	})
 }
 
+
+function treeVnjson (){
+
+
+
 /**
-- audio: main-theme #play
-- audio: stop
-- audio: pause
-
-
-- audio: 
-    name: main-theme 
-    action: play #[pause] #[stop]  #defalt=[play]
-    loop: true #[false]
-    volume: 30 #normal=100
-    speed: 0.3 #normal=1
+ * Строим дерево наших похождений
+ * Это нужно для того, дебага и может потом
+ * реализуют .pref но это не точно.
  */
+var sceneNode;
+function progressTreeBuilding  (isScene){
+
+var scene = this.current.sceneName;
+var label = this.current.labelName
+
+
+if(isScene){
+
+			sceneNode = {
+							name: scene,
+							children: new Array()
+					};
+
+		//Добавляю узел в глобальное рисунок дерева
+		this.current.tree.push(sceneNode);
+}
+
+
+	//Определяю индекс свежесозданного узла внутри дерева
+	let indexInTree = this.current.tree.indexOf(sceneNode);
+
+	//Получаю доступ к текущему узлу
+	var sceneObject = this.current.tree[indexInTree];
+
+	//добавляю в текущую сцену все label по которым
+	//перешел пользователь 
+	sceneObject.children.push(label);	
+};
+
+this.on('init', progressTreeBuilding)
+
+
+};
+
+
 function audioVnjson (){
+
+var store = {};	
+
+//store[]
+
+this.on('setAllAssets', _=>{
+	this.current.assets.forEach(asset=>{
+			store[asset.name] = new Howl({src: asset.url})
+	})
+
+})
 
 function audio (data){
 
 
 
+store[data.name].play();
+store[data.name].rate(data.speed||1);
+store[data.name].loop(data.loop||false);
+store[data.name].volume(data.volume||1)
+
 }
 
 
-	this.on('audio', audio)
+	this.on('audio', audio);
+	this.on('sound', data=>{
+		store[data].play();
+	})
 }

@@ -31,7 +31,6 @@
 }
 .stream__dialog-box{
 
-
 	width: 67%;
 	height: 100%;
 }
@@ -41,22 +40,16 @@
 	height: 14rem;
 
 	background-color: #082430;
-	font-size: 1.5em;
-	color: darkcyan;
+	font-size: 1.7em;
+
 	cursor: pointer;
 	padding: 3%;
 }
 .stream__character-name{
 	font-weight: bold;
 	font-size: 1.2em;
-	border-bottom: 2px solid #889;
 	margin-bottom: 10px;
-	padding-bottom: 10px;
-	width: 50%;
-	/*
-	padding: 5px;
-	border: 1px solid red;
-	*/
+
 }
 
 .screen__game-menu{

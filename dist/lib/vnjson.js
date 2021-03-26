@@ -46,26 +46,30 @@ class Vnjson {
 		},
 		data: { //userData
 			points: 0
-		} 
+		},
+		tree: [],
+		assets: []
 	};
 
-	conf = {
-		debug: false,
-		entry: "scene.label",
-		mode: "once",//all
-		scenes: undefined
-	}
-	/**
-	 * .getScenes(scenes, loader) 
-	 * 	need for [ jump ]
-	 */
-	sceneLoader = undefined;
-	assetsPath = [];
-	/**
-	 * Get a character who speaks a line
-	 * @return {object} current character
-	 */
 
+	setAllAssets(){
+
+		for(let [scene, body] of Object.entries(this.TREE)){
+
+				if(scene!=='characters'){
+
+					this.current.assets = this.current.assets.concat(body.assets);
+
+				}
+		}
+		this.emit('setAllAssets');
+	}
+	getAssetByName (name){
+		return this.current.assets.filter(asset=>{
+											return asset.name===name;
+					 })[0]
+		
+	}
 	getCurrentLabelBody (){
 		let labelBody = this.TREE[this.current.sceneName][this.current.labelName];
 		if(labelBody){
@@ -106,13 +110,7 @@ class Vnjson {
 						})
 					});
 		};
-		/*
-		if(body.assets){
-				body.assets.forEach(item=>{
-							this.assetsPath.push(item);
-				})
-			
-		}*/
+
 	}
 
 	on (event, handler){

@@ -10,24 +10,29 @@ vnjs.use(screenVnjson);
 vnjs.use(printVnjson);
 vnjs.use(alertVnjson);
 vnjs.use(infoVnjson);
-vnjs.use(itemVnjson)
+vnjs.use(itemVnjson);
+vnjs.use(treeVnjson);
+vnjs.use(audioVnjson);
 
-
-//vnjs.emit('screen', 'stream')
 
 
 $.getJSON("./scenes/vn.json",  package=>{
-	let { TREE, entry, debug, title } = package;
+	let { TREE, entry, debug, mode} = package;
 
 	if(debug===true){
 		vnjs.use(debugVnjson)
 	}
-	$('title').text(title)
+
+
+
  	vnjs.setTree(TREE);
 
  	vnjs.emit('screen', 'main-menu')
 
 	$('#newGame').on('mousedown', e=>{
+		if(mode==='all'){
+			vnjs.setAllAssets();
+		}
 		vnjs.emit('jump', entry)
 	})
 
@@ -36,10 +41,18 @@ $.getJSON("./scenes/vn.json",  package=>{
  });
 
 
-vnjs.on('init', scene=>{
+
+vnjs.on('init', function(scene){
+
+if(scene){
+	//this.current.assets = this.current.assets.concat(this.TREE[this.current.sceneName].assets)
+}
+
+
  		vnjs.exec();
 })
 
 $('.screen__text-box').on('mousedown', e=>{
 		vnjs.next()
 })
+
