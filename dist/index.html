@@ -4,10 +4,13 @@
 	<meta charset="utf-8">
 	<title>vtq-tpl</title>
 	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="./css/material-design-iconic-font.min.css">
 	<link rel="stylesheet" type="text/css" href="./css/main.css">
 	<link rel="stylesheet" type="text/css" href="./css/screen__stream.css">
+	<script src="./lib/Sortable.js"></script>
 	<script src="./lib/jquery.js"></script>
 	<script src="./lib/vnjson.js"></script>
+	<script src='./plugins.js'></script>
 </head>
 <body>
 
@@ -22,20 +25,25 @@
 			</div>
 <!--------------stream-------------->
 			<div class="scene screen__stream">
-
+				<div id="activeItems" class="stream__active-items"></div>
 				<div class="stream__dialog-box">
 					<div class="screen__text-box"></div>
 					<div class="screen__game-menu"></div>
 				</div>
 				<aside class="stream__aside">
 					<div class="game-top-bar">
-						<span>2.7 %</span>
+						<i class="zmdi zmdi-mail-send"></i><span>2.7 %</span>
 					</div>
-					<div class="game-aside-center"></div>
-					<div class="game-items">
-						<div></div><div></div><div></div>
-						<div></div><div></div><div></div>
-						<div></div><div></div><div></div>
+					<div class="game-aside-center">
+						<i class="zmdi zmdi-alert-triangle"></i>
+						<i class="zmdi zmdi-email"></i> 
+						<span>Сервер сообщений галактической связи</span>
+					</div>
+					<div class="game-items" id="userItems">
+						<!--
+							More icons
+							https://zavoloklom.github.io/material-design-iconic-font/icons.html
+						-->
 					</div>
 				</aside>	
 			</div>
@@ -48,9 +56,26 @@
 
 </div>
 
-</div>
+
+<script>
 
 
+Sortable.create(userItems, {
+  group: {
+    name: 'userItems',
+    pull: true
+  },
+  animation: 100
+});
+
+Sortable.create(activeItems, {
+  group: {
+    name: 'activeItems',
+    put: ['userItems']
+  },
+  animation: 100
+});	
+</script>
 <script src="./app.js"></script>
 </body>
 </html>

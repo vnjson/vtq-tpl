@@ -11,6 +11,24 @@
 	justify-content: space-around;
 
 }
+
+.stream__active-items{
+	border: 1px solid red;
+	width: 67%;
+	height: 50px;
+	align-content: flex-start;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+.sortable-ghost {
+  opacity: 0.2;
+}
+.sortable-fallback{
+	background-color: red;
+	cursor: -webkit-grabbing;
+	cursor: grabbing;
+}
 .stream__dialog-box{
 
 
@@ -20,7 +38,7 @@
 .screen__text-box{
 
 	width: 100%;
-	height: 18rem;
+	height: 14rem;
 
 	background-color: #082430;
 	font-size: 1.5em;
@@ -30,6 +48,7 @@
 }
 
 .screen__game-menu{
+
 }
 .screen__menu-item{
 	cursor: pointer;
@@ -81,17 +100,25 @@
 	width: 100%;
 	height: 60%;
 	border: 2px solid #124548;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	padding-top: 10px;
+	padding: 10px;
+
 }
-.game-items div{
-	width: 5.6vw;
-	height: 5.6vw;
+.user-item{
+	cursor: -webkit-grab;
+	cursor: grab;
+	width: 3vw;
+	height: 3vw;
+	margin: 5px;
 	border: 1px solid darkcyan;
+	color: grey;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 2em;
 }
-.game-items div:hover{
+.user-item:hover{
 	background-color: #082430;
-	cursor: pointer;
+}
+.user-item:active{
+
 }

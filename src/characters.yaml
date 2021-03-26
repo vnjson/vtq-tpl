@@ -1,3 +1,9 @@
+
+- name: c 
+  text: Капитан
+  color: '#49de58'
+  replyColor: '#a4deaa'
+
 - name: k
   text: Ковальски
   color: '#f26f11'
@@ -8,3 +14,4 @@
   text: Алиса
   color: '#a153b5'
   replyColor: '#b28fba'
+

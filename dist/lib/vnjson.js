@@ -24,14 +24,6 @@ class Vnjson {
 	 */
 	plugins = {};
 	/**
-	 * Необходимо хранить персонажей отдельно
-	 * так как потом я сравнить [ ctx ] на предмет
-	 * совпадения с персонажами и получить текущего
-	 * Что бы получить доступ к пользовательским 
-	 * свойствам персонажа character.age
-	 */
-	characters = [];
-	/**
 	 * Состояние игры.
 	 * Необходимо для загрузки и сохранения
 	 * А так же во время дебага, что бы при обновлении
@@ -74,7 +66,7 @@ class Vnjson {
 	 * @return {object} current character
 	 */
 	getCurrentCharacter (){
-		return this.characters.filter(character=>{
+		return this.TREE.characters.filter(character=>{
 				return character.name === this.current.characterName;
 		}).pop();
 	}
@@ -94,7 +86,7 @@ class Vnjson {
 	 * @return {object}
 	 */
 	getCharacterByName (name){
-		return this.characters.filter(character=>{
+		return this.TREE.characters.filter(character=>{
 				return character.name === name;
 		}).pop();
 	}
@@ -103,9 +95,9 @@ class Vnjson {
 	}
 	setTree (tree){
 		this.TREE = tree;
-		if(tree.characters){
-					this.characters = this.characters.concat(tree.characters)
-					tree.characters.forEach((character)=>{
+		if(this.TREE.characters){
+					
+					this.TREE.characters.forEach((character)=>{
 						//{al: 'hello world'}
 						//.on('al')
 						this.on(character.name, (reply)=>{
