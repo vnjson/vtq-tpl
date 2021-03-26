@@ -40,8 +40,8 @@ $('.screen__game-menu').show();
 		if(label==='$'){
 			$('.screen__text-box').html(menuItem)
 		}
-		else if(label===this.getCharacterByName('k').name){
-			this.emit('character',this.getCharacterByName('k'), menuItem)
+		else if(label===this.getCharacterById('k').id){
+			this.emit('character', this.getCharacterById('k'), menuItem)
 		}
 		else{
 
@@ -81,14 +81,33 @@ function screenVnjson(){
 
 function printVnjson (){
 
-	this.on('$', reply=>{
-		$('.screen__text-box').html(reply)
-	});
+function wrapCharacterNameInReply (reply){
+/*
+
+	let r =	this.TREE.characters.filter(character=>{
+						var re = new RegExp(character.name, 'i');
+						if(re.test(reply)&&character.name) return true;
+	})[0]
+	if(r){
+		let newStr = `<span style="color:${r.nameColor}">${r.name}</span>`
+		return reply.replace(r.name, newStr)
+	}else{
+		return reply
+	}
+	*/
+	return reply;
+}
 
 	this.on('character', (character, reply)=>{
-		$('.screen__text-box').html(`<p style="color:${character.color}">${character.text}</p>`);
-		$('.screen__text-box').append(`<p style="color:${character.replyColor}">${reply}</p>`);
+		var newReply = wrapCharacterNameInReply.call(this, reply);
+		if(!character.name){
 
+			$('.screen__text-box').html(`<div style="color:${character.replyColor}">${newReply}</div>`);
+
+		}else{
+			$('.screen__text-box').html(`<div style="color:${character.nameColor}" class='stream__character-name'>${character.name}</div>`);
+			$('.screen__text-box').append(`<div style="color:${character.replyColor}">${newReply}</div>`);
+		}
 	})
 }
 
@@ -132,12 +151,24 @@ function infoVnjson (){
 	})
 }
 
+/**
+- audio: main-theme #play
+- audio: stop
+- audio: pause
 
+
+- audio: 
+    name: main-theme 
+    action: play #[pause] #[stop]  #defalt=[play]
+    loop: true #[false]
+    volume: 30 #normal=100
+    speed: 0.3 #normal=1
+ */
 function audioVnjson (){
 
 function audio (data){
 
-	
+
 
 }
 

@@ -1,17 +1,22 @@
 
-- name: c 
-  text: Капитан
+- id: $ 
+  #name: Автор
+  #nameColor: 'red'
+  replyColor: 'gold' 
+
+- id: c 
+  name: Капитан
   color: '#49de58'
   replyColor: '#a4deaa'
 
-- name: k
-  text: Ковальски
-  color: '#f26f11'
+- id: k
+  name: Ковальски
+  nameColor: '#f26f11'
   replyColor: '#cfaf99'
 
 
-- name: al
-  text: Алиса
-  color: '#a153b5'
+- id: al
+  name: Алиса
+  nameColor: '#a153b5'
   replyColor: '#b28fba'
 

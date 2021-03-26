@@ -33,7 +33,7 @@ class Vnjson {
 		index: 0,
 		labelName: 'label',
 		sceneName: 'scene',
-		characterName: undefined,
+		character: {name: '$', text: 'Norrator'},
 		layer: {
 			audio: undefined,
 			scene: undefined, //bg
@@ -65,11 +65,7 @@ class Vnjson {
 	 * Get a character who speaks a line
 	 * @return {object} current character
 	 */
-	getCurrentCharacter (){
-		return this.TREE.characters.filter(character=>{
-				return character.name === this.current.characterName;
-		}).pop();
-	}
+
 	getCurrentLabelBody (){
 		let labelBody = this.TREE[this.current.sceneName][this.current.labelName];
 		if(labelBody){
@@ -85,9 +81,9 @@ class Vnjson {
 	 * @param  {string} name character id
 	 * @return {object}
 	 */
-	getCharacterByName (name){
+	getCharacterById (id){
 		return this.TREE.characters.filter(character=>{
-				return character.name === name;
+				return character.id === id;
 		}).pop();
 	}
 	getCtx (){
@@ -98,11 +94,15 @@ class Vnjson {
 		if(this.TREE.characters){
 					
 					this.TREE.characters.forEach((character)=>{
-						//{al: 'hello world'}
-						//.on('al')
-						this.on(character.name, (reply)=>{
+						/**
+						 * 
+						 */
+						this.on(character.id, (reply)=>{
 
 							this.emit('character', character, reply);
+							this.on('character', character=>{
+								this.current.character = character;
+							})
 						})
 					});
 		};
