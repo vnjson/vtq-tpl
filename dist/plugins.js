@@ -40,10 +40,11 @@ $('.screen__game-menu').show();
 	for(var [label, menuItem ] of Object.entries(menuObj)){
 		
 		if(label==='$'){
-			$('.screen__text-box').html(menuItem)
+			this.emit('character', this.getCharacterById(label), menuItem)
 		}
-		else if(label===this.getCharacterById('k').id){
-			this.emit('character', this.getCharacterById('k'), menuItem)
+		else if(this.getCharacterById(label)){
+
+			this.emit('character', this.getCharacterById(label), menuItem)
 		}
 		else{
 
@@ -52,6 +53,29 @@ $('.screen__game-menu').show();
 
 		}
 	}
+
+$( ".screen__menu-item").mouseover(_=>{
+
+	this.exec({
+		audio: {
+			name: 'menu-item',
+			action: 'play',
+			volume: 0.2,
+			speed: 2.5
+		}
+	})
+})
+$( ".screen__menu-item").mousedown(_=>{
+
+	this.exec({
+		audio: {
+			name: 'menu-item',
+			action: 'play',
+			volume: 0.5,
+			speed: 1
+		}
+	})
+})
 }
 
 this.on('menu', menu);
@@ -63,6 +87,8 @@ $( ".screen__game-menu" ).on( "click", ".screen__menu-item", e=>{
     this.emit('jump', e.target.dataset.label)
     $('.screen__game-menu').hide();
 });
+
+
 //
 
 
@@ -71,19 +97,41 @@ $( ".screen__game-menu" ).on( "click", ".screen__menu-item", e=>{
 function screenVnjson(){
 
 	var prevScreen;
-
+	var prevShow;
 	this.on('screen', function (screenName){
 		if(prevScreen){	
 			$(`.screen__${prevScreen}`).hide();
 		}
 		$(`.screen__${screenName}`).css('display', 'flex');
 			prevScreen = screenName;
+	});
+
+	this.on('show', function (showName){
+		if(prevShow){	
+			$(`.show__${prevShow}`).hide();
+		}
+		$(`.show__${showName}`).show();
+			prevShow = showName;
 	})
+
 }
 
 function printVnjson (){
 
+var re = new RegExp(/<i>\D*\S.*<\/i>/,'i')
+
+function wiki (reply){
+		if(re.test(reply)){
+			let str1 = reply.match(re)[0];
+			let str2 = str1.match(/[^<i>]\D*\S.*[^<\/i>]/)[0];
+			
+			this.emit('wiki', str2)
+		}	
+}
+
+
 function wrapCharacterNameInReply (reply){
+	
 /*
 
 	let r =	this.TREE.characters.filter(character=>{
@@ -97,11 +145,12 @@ function wrapCharacterNameInReply (reply){
 		return reply
 	}
 	*/
-	return reply;
+
 }
 
 	this.on('character', (character, reply)=>{
-		var newReply = wrapCharacterNameInReply.call(this, reply);
+		wiki.call(this, reply)
+		var newReply = reply// wrapCharacterNameInReply.call(this, reply);
 		if(!character.name){
 
 			$('.screen__text-box').html(`<div style="color:${character.replyColor}">${newReply}</div>`);
@@ -113,11 +162,6 @@ function wrapCharacterNameInReply (reply){
 	})
 }
 
-function alertVnjson (){
-	this.on('alert', _=>{
-		$('.screen').css({border: '1px solid red'})
-	})
-}
 
 
 function debugVnjson (){
@@ -145,15 +189,9 @@ var store = {
 }
 
 
-function infoVnjson (){
-
-
-	this.on('info', message=>{
-		$('.screen__text-box').html(`[ ${message} ]`)
-	})
-}
-
-
+/**
+ * Для дебага дерево прыжков строим
+ */
 function treeVnjson (){
 
 
@@ -216,7 +254,7 @@ function audio (data){
 
 
 
-store[data.name].play();
+store[data.name][data.action]();
 store[data.name].rate(data.speed||1);
 store[data.name].loop(data.loop||false);
 store[data.name].volume(data.volume||1)
@@ -228,4 +266,65 @@ store[data.name].volume(data.volume||1)
 	this.on('sound', data=>{
 		store[data].play();
 	})
+};
+
+function notifyVnjson (){
+
+	this.on('alert', msg=>{
+		if(!msg){
+			$('.stream__notifer').removeClass('alert');
+			$('.stream__notifer').text('');
+			this.exec({
+				audio: {
+					name: 'warn',
+					action: 'stop',
+					volume: 0.1,
+					speed: 0.7,
+					loop: true
+				}
+			})
+
+		}
+		else{
+			$('.stream__notifer').addClass('alert');
+			$('.stream__notifer').text(msg)
+			this.exec({
+				audio: {
+					name: 'warn',
+					action: 'play',
+					volume: 0.1,
+					speed: 0.7,
+					loop: true
+				}
+			})
+		}
+		
+	});
+
+
+
+this.on('info', msg=>{
+
+	this.exec({ sound: 'item' })
+
+	$('.stream__notifer').addClass('info')
+	$('.stream__notifer').text(msg);
+
+setTimeout(_=>{
+	$('.stream__notifer').removeClass('info');
+	$('.stream__notifer').text('');	
+},5000)
+
+})
+
+
+this.on('wiki', msg=>{
+	var wiki = this.TREE.volume_1.wiki
+	$('.stream__wiki')
+					.html(`<p class='info'>${msg}</p>`)
+					.append(`<p>${wiki[msg]}</p>`)
+
+});
+
+
 }

@@ -80,11 +80,22 @@ class Vnjson {
 			return [''];
 		}
 	}
-	/**
-	 * Get a character that has already been loaded
-	 * @param  {string} name character id
-	 * @return {object}
-	 */
+	getCurrentCharacter (){
+		/*
+		return this.TREE.characters.filter(character=>{
+			
+			var prop = this.ctx.hasOwnProperty(character.id);
+				if(prop){
+					return  true;
+				}else if(typeof this.ctx==='string'){
+					console.log(typeof this.ctx==='string')
+					return true;
+				}
+			
+			
+		})//.pop();
+		*/
+	}
 	getCharacterById (id){
 		return this.TREE.characters.filter(character=>{
 				return character.id === id;

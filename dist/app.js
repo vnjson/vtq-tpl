@@ -8,12 +8,12 @@ vnjs.use(menuVnjson)
 vnjs.use(screenVnjson);
 
 vnjs.use(printVnjson);
-vnjs.use(alertVnjson);
-vnjs.use(infoVnjson);
+
+
 vnjs.use(itemVnjson);
 vnjs.use(treeVnjson);
 vnjs.use(audioVnjson);
-
+vnjs.use(notifyVnjson)
 
 
 $.getJSON("./scenes/vn.json",  package=>{

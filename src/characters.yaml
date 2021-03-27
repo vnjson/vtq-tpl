@@ -6,7 +6,7 @@
 
 - id: c 
   name: Капитан
-  color: '#49de58'
+  nameColor: '#49de58'
   replyColor: '#a4deaa'
 
 - id: k
