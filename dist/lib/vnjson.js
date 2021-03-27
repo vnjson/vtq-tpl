@@ -11,13 +11,17 @@
 	'use strict';
 
 class Vnjson {
-	version = '1.3.6';
+	version = '1.5.4';
 	//store ui elemenents
 	$ = {};
 	//current object
 	ctx = {};
 	//loaded scenes
 	TREE = {};
+	constructor (){
+		this.initJumpPlugin();
+		this.treeVnjson();
+	}
 
 	/**
 	 * Plugins store
@@ -44,7 +48,7 @@ class Vnjson {
 			volume: 100,
 			zoom: 100
 		},
-		data: { //userData
+		data: { 
 			points: 0
 		},
 		tree: [],
@@ -90,9 +94,7 @@ class Vnjson {
 				}else if(typeof this.ctx==='string'){
 					console.log(typeof this.ctx==='string')
 					return true;
-				}
-			
-			
+				}			
 		})//.pop();
 		*/
 	}
@@ -187,6 +189,60 @@ class Vnjson {
 					fn();
 			}, 0);
 	}
+
+	initJumpPlugin (){
+		function jumpHandler(pathname){
+
+				let path = pathname.split('.');
+				this.current.index = 0;
+				//label
+				if(!/\./i.test(pathname)){		
+					this.current.labelName = path[0];
+					this.emit('init', false);
+				}
+				//scene.label
+				if(/\./i.test(pathname)){
+						this.current.sceneName = path[0];
+						this.current.labelName = path[1];
+						this.emit('init', true);
+				};
+			}
+			this.on('jump', jumpHandler);
+	}
+	/**
+	 * Для дебага дерево прыжков строим
+ 	 */
+		treeVnjson (){
+			/**
+ 			* Строим дерево наших похождений
+ 			* Это нужно для дебага и может потом
+ 			* реализуют .pref но это не точно.
+ 			*/
+			var sceneNode;
+			function progressTreeBuilding  (isScene){
+					var scene = this.current.sceneName;
+					var label = this.current.labelName
+					if(isScene){
+								sceneNode = {
+												name: scene,
+												children: new Array()
+										};
+							//Добавляю узел в глобальное рисунок дерева
+							this.current.tree.push(sceneNode);
+					}
+					//Определяю индекс свежесозданного узла внутри дерева
+					let indexInTree = this.current.tree.indexOf(sceneNode);
+					//Получаю доступ к текущему узлу
+					var sceneObject = this.current.tree[indexInTree];
+					//добавляю в текущую сцену все label по которым
+					//перешел пользователь 
+					sceneObject.children.push(label);	
+			};
+
+this.on('init', progressTreeBuilding)
+
+
+};
 };
 
 return Vnjson;

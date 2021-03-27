@@ -3,7 +3,7 @@
 const vnjs = new Vnjson();
 
 
-vnjs.use(jumpVnjson);
+
 vnjs.use(menuVnjson)
 vnjs.use(screenVnjson);
 
@@ -11,7 +11,7 @@ vnjs.use(printVnjson);
 
 
 vnjs.use(itemVnjson);
-vnjs.use(treeVnjson);
+
 vnjs.use(audioVnjson);
 vnjs.use(notifyVnjson)
 

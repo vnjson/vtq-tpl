@@ -1,34 +1,5 @@
 
 
-function jumpVnjson(){
-
-
-
-this.on('jump', pathname=>{
-
-				let path = pathname.split('.');
-
-				this.current.index = 0;
-				//label
-				if(!/\./i.test(pathname)){
-					
-					this.current.labelName = path[0];
-					this.emit('init', false)
-				}
-				//scene.label
-				if(/\./i.test(pathname)){
-						this.current.sceneName = path[0];
-						this.current.labelName = path[1];
-						this.emit('init', true)
-
-				};
-			})
-
-
-
-}
-
-
 function menuVnjson(){
 
 
@@ -55,7 +26,7 @@ $('.screen__game-menu').show();
 	}
 
 $( ".screen__menu-item").mouseover(_=>{
-
+/*
 	this.exec({
 		audio: {
 			name: 'menu-item',
@@ -63,10 +34,12 @@ $( ".screen__menu-item").mouseover(_=>{
 			volume: 0.2,
 			speed: 2.5
 		}
-	})
+	})*/
 })
 $( ".screen__menu-item").mousedown(_=>{
 
+//this.emit('sound', 'menu-item')
+/*
 	this.exec({
 		audio: {
 			name: 'menu-item',
@@ -74,7 +47,7 @@ $( ".screen__menu-item").mousedown(_=>{
 			volume: 0.5,
 			speed: 1
 		}
-	})
+	})*/
 })
 }
 
@@ -118,46 +91,15 @@ function screenVnjson(){
 
 function printVnjson (){
 
-var re = new RegExp(/<i>\D*\S.*<\/i>/,'i')
-
-function wiki (reply){
-		if(re.test(reply)){
-			let str1 = reply.match(re)[0];
-			let str2 = str1.match(/[^<i>]\D*\S.*[^<\/i>]/)[0];
-			
-			this.emit('wiki', str2)
-		}	
-}
-
-
-function wrapCharacterNameInReply (reply){
-	
-/*
-
-	let r =	this.TREE.characters.filter(character=>{
-						var re = new RegExp(character.name, 'i');
-						if(re.test(reply)&&character.name) return true;
-	})[0]
-	if(r){
-		let newStr = `<span style="color:${r.nameColor}">${r.name}</span>`
-		return reply.replace(r.name, newStr)
-	}else{
-		return reply
-	}
-	*/
-
-}
-
 	this.on('character', (character, reply)=>{
-		wiki.call(this, reply)
-		var newReply = reply// wrapCharacterNameInReply.call(this, reply);
+
 		if(!character.name){
 
-			$('.screen__text-box').html(`<div style="color:${character.replyColor}">${newReply}</div>`);
+			$('.screen__text-box').html(`<div style="color:${character.replyColor}">${reply}</div>`);
 
 		}else{
 			$('.screen__text-box').html(`<div style="color:${character.nameColor}" class='stream__character-name'>${character.name}</div>`);
-			$('.screen__text-box').append(`<div style="color:${character.replyColor}">${newReply}</div>`);
+			$('.screen__text-box').append(`<div style="color:${character.replyColor}">${reply}</div>`);
 		}
 	})
 }
@@ -189,59 +131,12 @@ var store = {
 }
 
 
-/**
- * Для дебага дерево прыжков строим
- */
-function treeVnjson (){
 
-
-
-/**
- * Строим дерево наших похождений
- * Это нужно для того, дебага и может потом
- * реализуют .pref но это не точно.
- */
-var sceneNode;
-function progressTreeBuilding  (isScene){
-
-var scene = this.current.sceneName;
-var label = this.current.labelName
-
-
-if(isScene){
-
-			sceneNode = {
-							name: scene,
-							children: new Array()
-					};
-
-		//Добавляю узел в глобальное рисунок дерева
-		this.current.tree.push(sceneNode);
-}
-
-
-	//Определяю индекс свежесозданного узла внутри дерева
-	let indexInTree = this.current.tree.indexOf(sceneNode);
-
-	//Получаю доступ к текущему узлу
-	var sceneObject = this.current.tree[indexInTree];
-
-	//добавляю в текущую сцену все label по которым
-	//перешел пользователь 
-	sceneObject.children.push(label);	
-};
-
-this.on('init', progressTreeBuilding)
-
-
-};
 
 
 function audioVnjson (){
 
 var store = {};	
-
-//store[]
 
 this.on('setAllAssets', _=>{
 	this.current.assets.forEach(asset=>{
@@ -254,11 +149,11 @@ function audio (data){
 
 
 
-store[data.name][data.action]();
+
 store[data.name].rate(data.speed||1);
 store[data.name].loop(data.loop||false);
 store[data.name].volume(data.volume||1)
-
+store[data.name][data.action]();
 }
 
 
@@ -317,6 +212,19 @@ setTimeout(_=>{
 
 })
 
+this.on('character', (character, reply)=>{
+/**
+ * Получаем элементы <i></i>
+ */
+var re = new RegExp(/<i>\D*\S.*<\/i>/,'i')
+
+		if(re.test(reply)){
+			let str1 = reply.match(re)[0];
+			let str2 = str1.match(/[^<i>]\D*\S.*[^<\/i>]/)[0];
+			this.emit('wiki', str2)
+		}
+
+})
 
 this.on('wiki', msg=>{
 	var wiki = this.TREE.volume_1.wiki
