@@ -1,4 +1,68 @@
+/**
+ * debug
+ */
 
+
+function debugVnjson (){
+	this.on('*', event=>{
+		if(event!=='exec'){
+			console.error(`Плагин { ${event} } не найден`)
+		}
+	});
+	this.on('exec', ctx=>{
+		console.log(ctx)
+	})
+
+}
+
+/**
+ * screen
+ */
+
+function screenVnjson(){
+
+	var prevScreen;
+	var prevShow;
+	this.on('screen', function (screenName){
+		if(prevScreen){	
+			$(`.screen__${prevScreen}`).hide();
+		}
+		$(`.screen__${screenName}`).show();
+			prevScreen = screenName;
+	});
+
+	this.on('show', function (showName){
+		if(prevShow){	
+			$(`.show__${prevShow}`).hide();
+		}
+		$(`.show__${showName}`).show();
+			prevShow = showName;
+	})
+
+}
+
+/**
+ * character
+ */
+
+function characterVnjson (){
+
+	this.on('character', (character, reply)=>{
+
+		if(!character.name){
+			$('.stream__character-name').html('')
+			$('.screen__text-box').html(`<div style="color:${character.replyColor}">${reply}</div>`);
+
+		}else{
+			$('.screen__text-box').html('')
+			$('.stream__character-name').html(character.name).css('color', character.nameColor)
+			$('.screen__text-box').append(`<div style="color:${character.replyColor}">${reply}</div>`);
+		}
+	})
+}
+/**
+ * game menu
+ */
 
 function menuVnjson(){
 
@@ -62,107 +126,30 @@ $( ".screen__game-menu" ).on( "click", ".screen__menu-item", e=>{
 });
 
 
-//
-
-
 }
 
-function screenVnjson(){
+/**
+ * Item
+ */
 
-	var prevScreen;
-	var prevShow;
-	this.on('screen', function (screenName){
-		if(prevScreen){	
-			$(`.screen__${prevScreen}`).hide();
-		}
-		$(`.screen__${screenName}`).css('display', 'flex');
-			prevScreen = screenName;
-	});
-
-	this.on('show', function (showName){
-		if(prevShow){	
-			$(`.show__${prevShow}`).hide();
-		}
-		$(`.show__${showName}`).show();
-			prevShow = showName;
-	})
-
-}
-
-function printVnjson (){
-
-	this.on('character', (character, reply)=>{
-
-		if(!character.name){
-
-			$('.screen__text-box').html(`<div style="color:${character.replyColor}">${reply}</div>`);
-
-		}else{
-			$('.screen__text-box').html(`<div style="color:${character.nameColor}" class='stream__character-name'>${character.name}</div>`);
-			$('.screen__text-box').append(`<div style="color:${character.replyColor}">${reply}</div>`);
-		}
-	})
-}
-
-
-
-function debugVnjson (){
-	this.on('*', event=>{
-		if(event!=='exec'){
-			console.error(`Плагин { ${event} } не найден`)
-		}
-	});
-
-}
 
 function itemVnjson (){
-var store = {
-	chip: '<div class="user-item zmdi zmdi-card-sim"></div>',
-	clip: '<div class="user-item zmdi zmdi-attachment" ></div>',
-	card: '<div class="user-item zmdi zmdi-card"></div>',
-	scissors: '<div class="user-item zmdi zmdi-scissors"></div>',
-	plaster: '<div class="user-item zmdi zmdi-plaster"></div>',
-	wrench: '<div class="user-item zmdi zmdi-wrench"></div>'
-}
 
 	this.on('item', id=>{
-		$('#userItems').append(store[id])
+		if(Array.isArray(id)){
+			id.map(item=>{
+				$('#userItems').append(this.TREE.$root.store[item])
+			})
+		}else{
+			$('#userItems').append(this.TREE.$root.store[id])
+		}
+		
 	})
 }
 
-
-
-
-
-function audioVnjson (){
-
-var store = {};	
-
-this.on('setAllAssets', _=>{
-	this.current.assets.forEach(asset=>{
-			store[asset.name] = new Howl({src: asset.url})
-	})
-
-})
-
-function audio (data){
-
-
-
-
-store[data.name].rate(data.speed||1);
-store[data.name].loop(data.loop||false);
-store[data.name].volume(data.volume||1)
-store[data.name][data.action]();
-}
-
-
-	this.on('audio', audio);
-	this.on('sound', data=>{
-		store[data].play();
-	})
-};
-
+/**
+ * notify
+ */
 function notifyVnjson (){
 
 	this.on('alert', msg=>{
@@ -200,11 +187,11 @@ function notifyVnjson (){
 
 this.on('info', msg=>{
 
-	this.exec({ sound: 'item' })
+	
 
 	$('.stream__notifer').addClass('info')
 	$('.stream__notifer').text(msg);
-
+	this.exec({ sound: 'item' })
 setTimeout(_=>{
 	$('.stream__notifer').removeClass('info');
 	$('.stream__notifer').text('');	
@@ -227,7 +214,7 @@ var re = new RegExp(/<i>\D*\S.*<\/i>/,'i')
 })
 
 this.on('wiki', msg=>{
-	var wiki = this.TREE.volume_1.wiki
+	var wiki = this.TREE.$root.wiki
 	$('.stream__wiki')
 					.html(`<p class='info'>${msg}</p>`)
 					.append(`<p>${wiki[msg]}</p>`)
@@ -236,3 +223,38 @@ this.on('wiki', msg=>{
 
 
 }
+
+
+
+/**
+ * audio
+ */
+function audioVnjson (){
+
+var store = {};	
+
+this.on('setAllAssets', _=>{
+	this.current.assets.forEach(asset=>{
+			store[asset.name] = new Howl({src: asset.url})
+	})
+
+})
+
+function audio (data){
+
+
+
+
+store[data.name].rate(data.speed||1);
+store[data.name].loop(data.loop||false);
+store[data.name].volume(data.volume||1)
+store[data.name][data.action]();
+}
+
+
+	this.on('audio', audio);
+	this.on('sound', data=>{
+		store[data].play();
+	})
+};
+

@@ -51,7 +51,7 @@ scenesToJson('./src', './dist/scenes', (err, data)=>{
 
 function watchDir(cb) {
 
-  watch('./src/*.{yaml,yml}', scenes );
+ 
   watch('./src/**/*.{yaml,yml}', scenes );
 
   cb();

@@ -11,7 +11,7 @@
 	'use strict';
 
 class Vnjson {
-	version = '1.5.4';
+	version = '1.6.0';
 	//store ui elemenents
 	$ = {};
 	//current object
@@ -59,20 +59,14 @@ class Vnjson {
 	setAllAssets(){
 
 		for(let [scene, body] of Object.entries(this.TREE)){
-
-				if(scene!=='characters'){
-
-					this.current.assets = this.current.assets.concat(body.assets);
-
-				}
-		}
+				this.current.assets = this.current.assets.concat(body.assets);
+		};
 		this.emit('setAllAssets');
 	}
 	getAssetByName (name){
 		return this.current.assets.filter(asset=>{
 											return asset.name===name;
-					 })[0]
-		
+					 })[0];
 	}
 	getCurrentLabelBody (){
 		let labelBody = this.TREE[this.current.sceneName][this.current.labelName];
@@ -85,21 +79,11 @@ class Vnjson {
 		}
 	}
 	getCurrentCharacter (){
-		/*
-		return this.TREE.characters.filter(character=>{
-			
-			var prop = this.ctx.hasOwnProperty(character.id);
-				if(prop){
-					return  true;
-				}else if(typeof this.ctx==='string'){
-					console.log(typeof this.ctx==='string')
-					return true;
-				}			
-		})//.pop();
-		*/
+
+		return this.current.character;
 	}
 	getCharacterById (id){
-		return this.TREE.characters.filter(character=>{
+		return this.TREE.$root.characters.filter(character=>{
 				return character.id === id;
 		}).pop();
 	}
@@ -108,19 +92,19 @@ class Vnjson {
 	}
 	setTree (tree){
 		this.TREE = tree;
-		if(this.TREE.characters){
+		if(this.TREE.$root.characters){
 					
-					this.TREE.characters.forEach((character)=>{
+					this.TREE.$root.characters.forEach((character)=>{
 						/**
+						 * Навешиваем слушатель на id персонажа
 						 * 
 						 */
 						this.on(character.id, (reply)=>{
 
+							this.current.character = character;
 							this.emit('character', character, reply);
-							this.on('character', character=>{
-								this.current.character = character;
-							})
 						})
+
 					});
 		};
 
@@ -133,6 +117,7 @@ class Vnjson {
       this.plugins[event].push(handler);
 	}
 	emit (event, ...args){
+
 		setTimeout(_=>{
 			if (Array.isArray(this.plugins[event])) {
       	this.plugins[event].forEach(handler =>{
@@ -166,9 +151,8 @@ class Vnjson {
 				this.emit(event, data);
 			}
 		}/*else*/
-		this.emit('exec', this.ctx);
+		this.emit('exec', this.ctx)
 	}
-
 
 	next (){
 		if(this.getCurrentLabelBody().length-2<this.current.index){
@@ -238,12 +222,9 @@ class Vnjson {
 					//перешел пользователь 
 					sceneObject.children.push(label);	
 			};
-
-this.on('init', progressTreeBuilding)
-
-
-};
-};
+			this.on('init', progressTreeBuilding)
+		};
+	};
 
 return Vnjson;
 });

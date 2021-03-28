@@ -39,8 +39,8 @@ html, body{
  */
 
 .screen{
-
-	border: 2.5px solid #124548;
+	height: 60vh;
+	border: 3.5px solid #124548;
 
 	padding: 10px;
 
@@ -99,4 +99,41 @@ html, body{
 	font-weight: normal; 
 } 
 		
+/**
+10px from the top of the element
+20px from the right of the element
+30px from the bottom of the element
+40px from the left of the element
+ */
+.game{
+/*
+	position: relative;
+	clip-path: polygon(100% 0, 100% 55vh, 105vh 100%, 0 100%, 0 0);
+*/
 
+}
+
+
+
+footer{
+	position: absolute;
+	bottom: 0;
+	width: 70%;
+	color: grey;
+	padding-bottom: 15px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+}
+footer p{
+
+	/*margin: 7px;*/
+}
+footer a{
+	color: grey;
+}
+
+footer a:hover{
+	color: darkcyan;
+}

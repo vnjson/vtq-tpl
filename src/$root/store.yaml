@@ -1,9 +1,38 @@
   
 #keyWord: <div class="user-item"></div>
 
-chip: '<div class="user-item zmdi zmdi-card-sim"></div>',
-clip: '<div class="user-item zmdi zmdi-attachment" ></div>',
-card: '<div class="user-item zmdi zmdi-card"></div>',
-scissors: '<div class="user-item zmdi zmdi-scissors"></div>',
-plaster: '<div class="user-item zmdi zmdi-plaster"></div>',
+chip: '<div class="user-item zmdi zmdi-card-sim"></div>'
+clip: '<div class="user-item zmdi zmdi-attachment" ></div>'
+card: '<div class="user-item zmdi zmdi-card"></div>'
+scissors: '<div class="user-item zmdi zmdi-scissors"></div>'
+plaster: '<div class="user-item zmdi zmdi-plaster"></div>'
 wrench: '<div class="user-item zmdi zmdi-wrench"></div>'
+battery: '<div class="user-item zmdi zmdi-battery-flash"></div>'
+floppy: '<div class="user-item zmdi zmdi-floppy"></div>'
+
+# Так же будет возможность находить письма
+# А прочитать я их смогу бросив
+# в поле моего персонажа. А он это Norrator
+# 
+# Так же найденые письма можно будет давать почитать
+# другим персонажам
+# 
+#
+#
+#<div class="zmdi zmdi-assignment"></div>
+
+#<div class="zmdi zmdi-case"></div>
+# <div class="zmdi zmdi-email"></div>
+# <div class="zmdi zmdi-eyedropper"></div>
+# <div class="zmdi zmdi-key"></div>
+# <div class="zmdi zmdi-floppy"></div>
+# <div class="zmdi zmdi-smartphone-android"></div>
+#
+#
+#
+#
+#
+# More icons
+# https://zavoloklom.github.io/material-design-iconic-font/icons.html
+#
+#

@@ -9,7 +9,7 @@
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-connect": "^5.7.0",
-    "scenes-to-json": "^0.6.2"
+    "scenes-to-json": "^0.7.0"
   },
   "repository": {
     "type": "git",
