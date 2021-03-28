@@ -1,6 +1,11 @@
 {
   "$root": {
-    "assets": [],
+    "assets": [
+      {
+        "name": "characters",
+        "url": "./scenes/assets/characters"
+      }
+    ],
     "characters": [
       {
         "id": "$",
