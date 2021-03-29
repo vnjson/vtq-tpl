@@ -48,31 +48,34 @@ function screenVnjson(){
 
 function characterVnjson (){
 
-var renderItems = character=>{
-
-	$('#activeItems').html('')
-var store = this.TREE.$root.store;
-character.items.forEach(item=>{
-
-	if(store[item]){
-
-		$('#activeItems').append(store[item])
-	}
-})
-
-//$('#activeItems').html(character.items)
+var renderLogo = character=>{
+			$('.stream__character-logo').css('background-image', `url('${this.getAssetByName(character.logo).url}')` )
+			$('.stream__character-logo').css('transition','background-image 0.5s')
 
 }
 
 
+var renderItems = character=>{
+
+$('#activeItems').html('')
+var store = this.TREE.$root.store;
+
+if(character.items){
+	 character.items.forEach(item=>{
+		 if(store[item]){
+			 $('#activeItems').append(store[item])
+		 }
+	 });
+}
+
+};//renderItems
 
 	this.on('character', (character, reply)=>{
-		renderItems(character)
-		this.emit('logo', character.logo)
+		renderItems(character);
+		renderLogo(character)
 		if(!character.name){
 			$('.stream__character-name').html('')
 			$('.screen__text-box').html(`<div style="color:${character.replyColor}">${reply}</div>`);
-
 		}else{
 			$('.screen__text-box').html('')
 			$('.stream__character-name').html(character.name).css('color', character.nameColor)
@@ -80,6 +83,9 @@ character.items.forEach(item=>{
 		}
 	})
 }
+
+
+
 /**
  * game menu
  */
@@ -120,31 +126,23 @@ $( ".screen__menu-item").mouseover(_=>{
 		} 
 	})
 })
-$( ".screen__menu-item").mousedown(_=>{
 
-
-	this.exec({
-		audio: {
-			name: 'item',
-			action: 'play',
-			volume: 0.5,
-			speed: 1.5
-		}
-	})
-})
-}
-
-this.on('menu', menu);
-
-
-$( ".screen__game-menu" ).on( "click", ".screen__menu-item", e=>{
+var clickHundler = e=>{
     e.preventDefault();
 
     this.emit('jump', e.target.dataset.label)
     $('.screen__game-menu').hide();
-});
+    $('.screen__game-menu').off( "click", clickHundler)
+}
 
 
+
+$( ".screen__game-menu" ).on( "click", ".screen__menu-item", clickHundler);
+
+
+}
+
+this.on('menu', menu);
 }
 
 /**
@@ -303,68 +301,76 @@ store[data.name][data.action]();
 
 
 
-function logoVnjson (){
-
-
-
-//var assets = this.current.assets;
-var i = 0;
-
-var load = ()=>{
-	
-	var assets = this.TREE.$root.assets;
-
-	
-	if(/.png|.jpg/i.test( assets[i].url)){
-	
-  let img = new Image();
-       img.src =  assets[i].url;
-       img.onload = ()=>{
-            
-       		
-             if( assets.length-1>=++i){
-             
-             		load()
-             }
-       };
-  } 
-}
-window.addEventListener("load", _=>{
-	load()
-  
-});
-/*
-this.on('init', scene=>{
-
-//background-image: url(../assets/characters/napoleon.png);	
-	load()
-})*/
-
-
-
-
-this.on('logo', name=>{
-
-$('.stream__character-logo').css('background-image', `url('${this.getAssetByName(name).url}')` )
-$('.stream__character-logo').css('transition','background-image 0.5s')
-})
-
-}
-
+/**
+ * Input
+ */
 
 function inputVnjson (){
-//$('.screen__game-menu').html('');	
-//$('.screen__game-menu').show();
 
-	this.on('input', e=>{
-		if(e){
-			//$('.screen__game-menu').html('');
+function input (menuObj){
+$('.screen__game-menu').html('');	
+$('.screen__game-menu').show();
+
+
+	for(var [label, menuItem ] of Object.entries(menuObj)){
 		
-			$('stream__character-name').html('<input type="text" placeholder="В ведите имя">')
+		if(label==='$'){
+			this.emit('character', this.getCharacterById(label), `${menuItem}<b><input type="text" id="userName">`)
+		}
+		else if(this.getCharacterById(label)){
 
-		}else{
-			//$('.screen__game-menu').html('');
+			this.emit('character', this.getCharacterById(label), `${menuItem}<b><input type="text" id="userName">`)
+		}
+		else{
+
+			let str = `<div data-label="${ label }" class="screen__menu-item">${ menuItem }</div>`;
+			$('.screen__game-menu').append(str)
+
+		}
+
+
+$( ".screen__menu-item").mouseover(_=>{
+
+	this.exec({
+		audio: {
+			name: 'item',
+			action: 'play',
+			volume: 0.2,
+			speed: 2.5
+		} 
+	})
+})
+$( ".screen__menu-item").mousedown(_=>{
+	this.exec({
+		audio: {
+			name: 'item',
+			action: 'play',
+			volume: 0.5,
+			speed: 1.5
 		}
 	})
 
+})
+}
+
+var handler = e=>{
+  e.preventDefault();
+  var userName = $('#userName').val();
+
+  if(userName!==''){
+  	
+  	this.getCharacterById('$').name = userName;
+  	this.current.data.userName = userName;
+  	this.emit('jump', e.target.dataset.label);
+    $('.screen__game-menu').hide();
+    $( ".screen__game-menu" ).off( "click", handler);
+  }
+
+}
+
+
+$( ".screen__game-menu" ).on( "click", ".screen__menu-item", handler);
+
+}
+this.on('input', input);
 }

@@ -38,9 +38,21 @@
 # Так же можно записывать в блок персонажа другие
 # данные, например. Как то взаимодейстоввать с текущей
 # локацией или средой.
-- id: reactor
+- id: _reactor
   name: Реактор
+  logo: reactor
   nameColor: red
   replyColor: '#999'
-  items: 
-    - chip
+
+
+##
+# Обнаружен интересный баг
+# Если - id: reactor
+# - menu:
+#     $: Какой нибудь вопрос
+#     reactor: Отправиться в реактор
+#     menuItem_2: Купить молока
+#     menuItem: Сходить в цирк
+#______________________________________
+# menu.click->reactor (label) -> exec.character->reactor     
+#     

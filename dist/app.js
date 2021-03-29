@@ -1,3 +1,35 @@
+function loadAssets (){
+
+var i = 0;
+
+var load = ()=>{
+	
+	var assets = this.TREE.$root.assets;
+
+	
+	if(/.png|.jpg/i.test( assets[i].url)){
+	
+  let img = new Image();
+       img.src =  assets[i].url;
+       img.onload = ()=>{
+            
+       		
+             if( assets.length-1>=++i){
+             
+             		load()
+             }
+       };
+  } 
+}
+window.addEventListener("load", _=>{
+	load()
+  
+});
+
+}
+
+
+
 
 
 const vnjs = new Vnjson();
@@ -11,7 +43,9 @@ vnjs.use(menuVnjson);
 vnjs.use(itemVnjson);
 vnjs.use(notifyVnjson);
 vnjs.use(audioVnjson);
-vnjs.use(logoVnjson)
+
+vnjs.use(loadAssets);
+vnjs.use(inputVnjson);
 /**
  * load game
  */

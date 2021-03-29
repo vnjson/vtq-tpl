@@ -6,200 +6,20 @@
         "url": "./scenes/assets/alice.png"
       },
       {
-        "name": "avatar-1",
-        "url": "./scenes/assets/avatar-1.png"
-      },
-      {
-        "name": "avatar-2",
-        "url": "./scenes/assets/avatar-2.png"
-      },
-      {
-        "name": "avatar",
-        "url": "./scenes/assets/avatar.png"
-      },
-      {
-        "name": "boy-1",
-        "url": "./scenes/assets/boy-1.png"
-      },
-      {
-        "name": "boy-2",
-        "url": "./scenes/assets/boy-2.png"
-      },
-      {
-        "name": "boy-3",
-        "url": "./scenes/assets/boy-3.png"
-      },
-      {
-        "name": "boy-4",
-        "url": "./scenes/assets/boy-4.png"
-      },
-      {
-        "name": "boy-5",
-        "url": "./scenes/assets/boy-5.png"
-      },
-      {
-        "name": "boy",
-        "url": "./scenes/assets/boy.png"
-      },
-      {
         "name": "capitan",
         "url": "./scenes/assets/capitan.png"
-      },
-      {
-        "name": "catwoman",
-        "url": "./scenes/assets/catwoman.png"
-      },
-      {
-        "name": "heisenberg",
-        "url": "./scenes/assets/heisenberg.png"
-      },
-      {
-        "name": "hindu-1",
-        "url": "./scenes/assets/hindu-1.png"
-      },
-      {
-        "name": "hindu",
-        "url": "./scenes/assets/hindu.png"
-      },
-      {
-        "name": "japanese",
-        "url": "./scenes/assets/japanese.png"
-      },
-      {
-        "name": "knight",
-        "url": "./scenes/assets/knight.png"
       },
       {
         "name": "kova",
         "url": "./scenes/assets/kova.png"
       },
       {
-        "name": "kung-fu",
-        "url": "./scenes/assets/kung-fu.png"
-      },
-      {
-        "name": "man-1",
-        "url": "./scenes/assets/man-1.png"
-      },
-      {
-        "name": "man-2",
-        "url": "./scenes/assets/man-2.png"
-      },
-      {
-        "name": "man-3",
-        "url": "./scenes/assets/man-3.png"
-      },
-      {
-        "name": "man-4",
-        "url": "./scenes/assets/man-4.png"
-      },
-      {
-        "name": "man-5",
-        "url": "./scenes/assets/man-5.png"
-      },
-      {
-        "name": "man",
-        "url": "./scenes/assets/man.png"
-      },
-      {
-        "name": "punk-1",
-        "url": "./scenes/assets/punk-1.png"
-      },
-      {
-        "name": "punk",
-        "url": "./scenes/assets/punk.png"
+        "name": "reactor",
+        "url": "./scenes/assets/reactor.png"
       },
       {
         "name": "robocop",
         "url": "./scenes/assets/robocop.png"
-      },
-      {
-        "name": "samurai",
-        "url": "./scenes/assets/samurai.png"
-      },
-      {
-        "name": "santa-claus",
-        "url": "./scenes/assets/santa-claus.png"
-      },
-      {
-        "name": "woman-1",
-        "url": "./scenes/assets/woman-1.png"
-      },
-      {
-        "name": "woman-10",
-        "url": "./scenes/assets/woman-10.png"
-      },
-      {
-        "name": "woman-11",
-        "url": "./scenes/assets/woman-11.png"
-      },
-      {
-        "name": "woman-12",
-        "url": "./scenes/assets/woman-12.png"
-      },
-      {
-        "name": "woman-13",
-        "url": "./scenes/assets/woman-13.png"
-      },
-      {
-        "name": "woman-14",
-        "url": "./scenes/assets/woman-14.png"
-      },
-      {
-        "name": "woman-15",
-        "url": "./scenes/assets/woman-15.png"
-      },
-      {
-        "name": "woman-17",
-        "url": "./scenes/assets/woman-17.png"
-      },
-      {
-        "name": "woman-18",
-        "url": "./scenes/assets/woman-18.png"
-      },
-      {
-        "name": "woman-19",
-        "url": "./scenes/assets/woman-19.png"
-      },
-      {
-        "name": "woman-2",
-        "url": "./scenes/assets/woman-2.png"
-      },
-      {
-        "name": "woman-3",
-        "url": "./scenes/assets/woman-3.png"
-      },
-      {
-        "name": "woman-4",
-        "url": "./scenes/assets/woman-4.png"
-      },
-      {
-        "name": "woman-5",
-        "url": "./scenes/assets/woman-5.png"
-      },
-      {
-        "name": "woman-6",
-        "url": "./scenes/assets/woman-6.png"
-      },
-      {
-        "name": "woman-7",
-        "url": "./scenes/assets/woman-7.png"
-      },
-      {
-        "name": "woman-8",
-        "url": "./scenes/assets/woman-8.png"
-      },
-      {
-        "name": "woman-9",
-        "url": "./scenes/assets/woman-9.png"
-      },
-      {
-        "name": "woman",
-        "url": "./scenes/assets/woman.png"
-      },
-      {
-        "name": "wood-cutter",
-        "url": "./scenes/assets/wood-cutter.png"
       }
     ],
     "characters": [
@@ -242,6 +62,13 @@
           "scissors",
           "plaster"
         ]
+      },
+      {
+        "id": "_reactor",
+        "name": "Реактор",
+        "logo": "reactor",
+        "nameColor": "red",
+        "replyColor": "#999"
       }
     ],
     "package": {
@@ -297,24 +124,21 @@
         ]
       },
       {
-        "c": "Не люблю официальных кодовых имен, так что хотелось бы знать как обращаться к тебе не формально. Сам понимаешь, если общаться только формально, то колектив трудно сплотить.",
-        "item": "card",
-        "info": "[ Получена карта допуска к палубе @b17 ]"
-      },
+        "input": {
+          "c": "Как к тебе обращаться?",
+          "chapter_2": "Представиться"
+        }
+      }
+    ],
+    "chapter_2": [
       {
-        "$": "Текст",
-        "input": true
+        "c": "Не люблю официальных кодовых имен, так что хотелось бы знать как обращаться к тебе не формально. Сам понимаешь, если общаться только формально, то колектив трудно сплотить."
       },
       {
         "c": "Говорит Капитан корабля <i>#4815162342</i> <p>Наш экипаж терпит крушение в Туманной туманности</p>",
         "alert": "Потеря давления в отсеке @171"
       },
       "Никто толком не понимает почему это происходит <br> Но мы теряем давление в отсеке <i>@171</i>",
-      {
-        "jump": "chapter_2"
-      }
-    ],
-    "chapter_2": [
       "В течении <s>17 часов</s> 16 часов мы будем вынуждены погрузиться в <i>гибернацию</i>",
       ".........",
       {
@@ -400,7 +224,8 @@
       },
       {
         "info": "[ Найден гланый контроллер блока @171 ]",
-        "item": "chip"
+        "item": "chip",
+        "_reactor": "Что нибудь можно вывести здесь"
       },
       {
         "k": "Вот теперь, хоть надежда появилась. Осталось лишь найти пластырь и ножницы"
