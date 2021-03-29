@@ -212,7 +212,7 @@ function notifyVnjson (){
 		}
 		else{
 			$('.stream__notifer').addClass('alert');
-			$('.stream__notifer').text(msg)
+			$('.stream__notifer').text(msg).css('color', 'red')
 			this.exec({
 				audio: {
 					name: 'warn',
