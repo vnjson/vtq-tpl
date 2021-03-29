@@ -90,3 +90,59 @@ $('.screen__text-box').on('mousedown', e=>{
 		vnjs.next()
 })
 
+/*
+vnjs.on('alert', function(selector) {
+         $('.stream__notifer').animate({"left":"+=8px"}, 50)
+                    .animate({"left":"-=8px"}, 50)
+                    .animate({"left":"+=8px"}, 50)
+                    .animate({"left":"-=8px"}, 50);
+})*/
+/*
+
+ */
+
+let data = {
+
+  email: 'johndoe@gmail.com',
+  age: 28
+};
+
+let rules = {
+  name: 'required',
+  email: 'required|email',
+  age: 'min:18'
+};
+
+let validation = new Validator(data, rules);
+
+console.log(validation.passes() ); // true
+console.error( validation.errors.first('name') ); 
+//console.error( validation.errors.get('name') ); 
+//validation.fails() ); // false
+//
+/*validation.errors.get('email');
+  name: 'size:3',
+  email: 'required|email'
+*/
+
+/**
+let nested = {
+  name: 'required',
+  bio: {
+    age: 'min:18',
+    education: {
+      primary: 'string',
+      secondary: 'string'
+    }
+  }
+};
+
+// OR
+
+let flattened = {
+  'name': 'required',
+  'bio.age': 'min:18',
+  'bio.education.primary': 'string',
+  'bio.education.secondary': 'string'
+};
+ */
