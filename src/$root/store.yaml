@@ -9,7 +9,7 @@ plaster: '<div class="user-item zmdi zmdi-plaster"></div>'
 wrench: '<div class="user-item zmdi zmdi-wrench"></div>'
 battery: '<div class="user-item zmdi zmdi-battery-flash"></div>'
 floppy: '<div class="user-item zmdi zmdi-floppy"></div>'
-
+email: '<div class="user-item zmdi zmdi-email"></div>'
 # Так же будет возможность находить письма
 # А прочитать я их смогу бросив
 # в поле моего персонажа. А он это Norrator
@@ -22,10 +22,10 @@ floppy: '<div class="user-item zmdi zmdi-floppy"></div>'
 #<div class="zmdi zmdi-assignment"></div>
 
 #<div class="zmdi zmdi-case"></div>
-# <div class="zmdi zmdi-email"></div>
+# 
 # <div class="zmdi zmdi-eyedropper"></div>
 # <div class="zmdi zmdi-key"></div>
-# <div class="zmdi zmdi-floppy"></div>
+
 # <div class="zmdi zmdi-smartphone-android"></div>
 #
 #

@@ -2,21 +2,35 @@
 - id: $ 
   #name: Автор
   #nameColor: 'red'
-  replyColor: 'gold' 
+  replyColor: 'gold'
+  logo: robocop
+  items:
+    - d
 
 - id: c 
   name: Капитан
   nameColor: '#49de58'
   replyColor: '#a4deaa'
+  logo: capitan
+  items:
+    - card
+    - clip
 
 - id: k
   name: Ковальски
   nameColor: '#f26f11'
   replyColor: '#cfaf99'
+  logo: kova
+  items:
+    - email
 
 
 - id: al
   name: Алиса
   nameColor: '#a153b5'
   replyColor: '#b28fba'
+  logo: alice
+  items:
+    - scissors
+    - plaster
 

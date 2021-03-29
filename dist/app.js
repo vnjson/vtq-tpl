@@ -11,7 +11,7 @@ vnjs.use(menuVnjson);
 vnjs.use(itemVnjson);
 vnjs.use(notifyVnjson);
 vnjs.use(audioVnjson);
-
+vnjs.use(logoVnjson)
 /**
  * load game
  */
@@ -35,7 +35,7 @@ $.getJSON("./scenes/vn.json",  tree=>{
 
 $('#newGame').on('mousedown', e=>{
 	let { mode, entry } = vnjs.TREE.$root.package;
-	
+
 	if(mode==='all'){
 				vnjs.setAllAssets();
 	}

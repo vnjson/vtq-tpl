@@ -12,8 +12,6 @@
 
 class Vnjson {
 	version = '1.6.0';
-	//store ui elemenents
-	$ = {};
 	//current object
 	ctx = {};
 	//loaded scenes
@@ -37,7 +35,7 @@ class Vnjson {
 		index: 0,
 		labelName: 'label',
 		sceneName: 'scene',
-		character: {name: '$', text: 'Norrator'},
+		character: {id: '$', name: 'Norrator'},
 		layer: {
 			audio: undefined,
 			scene: undefined, //bg
@@ -136,7 +134,7 @@ class Vnjson {
 		//Получаем текущий объект контекста
 		this.ctx = ctx||this.getCtx();
 		if(typeof this.ctx === 'string'){
-					this.emit('$', this.ctx);
+					this.emit('character', this.getCharacterById('$'), this.ctx);
 		}else{
 			/**
 			 * Преобразуем объект контекста [this.ctx] в массив 

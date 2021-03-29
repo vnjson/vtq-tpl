@@ -10,7 +10,8 @@ function debugVnjson (){
 		}
 	});
 	this.on('exec', ctx=>{
-		console.log(ctx)
+		console.log(this.getCurrentCharacter().name)
+		//console.log(ctx)
 	})
 
 }
@@ -47,8 +48,27 @@ function screenVnjson(){
 
 function characterVnjson (){
 
-	this.on('character', (character, reply)=>{
+var renderItems = character=>{
 
+	$('#activeItems').html('')
+var store = this.TREE.$root.store;
+character.items.forEach(item=>{
+
+	if(store[item]){
+
+		$('#activeItems').append(store[item])
+	}
+})
+
+//$('#activeItems').html(character.items)
+
+}
+
+
+
+	this.on('character', (character, reply)=>{
+		renderItems(character)
+		this.emit('logo', character.logo)
 		if(!character.name){
 			$('.stream__character-name').html('')
 			$('.screen__text-box').html(`<div style="color:${character.replyColor}">${reply}</div>`);
@@ -90,28 +110,27 @@ $('.screen__game-menu').show();
 	}
 
 $( ".screen__menu-item").mouseover(_=>{
-/*
+
 	this.exec({
 		audio: {
-			name: 'menu-item',
+			name: 'item',
 			action: 'play',
 			volume: 0.2,
 			speed: 2.5
-		}
-	})*/
+		} 
+	})
 })
 $( ".screen__menu-item").mousedown(_=>{
 
-//this.emit('sound', 'menu-item')
-/*
+
 	this.exec({
 		audio: {
-			name: 'menu-item',
+			name: 'item',
 			action: 'play',
 			volume: 0.5,
-			speed: 1
+			speed: 1.5
 		}
-	})*/
+	})
 })
 }
 
@@ -135,17 +154,39 @@ $( ".screen__game-menu" ).on( "click", ".screen__menu-item", e=>{
 
 function itemVnjson (){
 
-	this.on('item', id=>{
+var userArr = [];
+
+function item (id){
+
+	/*
 		if(Array.isArray(id)){
 			id.map(item=>{
 				$('#userItems').append(this.TREE.$root.store[item])
 			})
-		}else{
-			$('#userItems').append(this.TREE.$root.store[id])
-		}
+		}else{}*/
+
+		this.getCurrentCharacter().items.forEach(i=>{
+					if(i===id){
+						let index = this.getCurrentCharacter().items.indexOf(id);
+						console.log(index)
+						//userArr = this.getCurrentCharacter().items.slice(index, 1)
+					//	console.log(userArr)
+						this.current.character.items = userArr
+						$('#userItems').append(this.TREE.$root.store[id])
+					}else{
+						//$('#userItems').append(this.TREE.$root.store[id])
+					}
+		})
 		
-	})
+		
+};
+
+this.on('item', item);
+
+
 }
+
+
 
 /**
  * notify
@@ -154,8 +195,10 @@ function notifyVnjson (){
 
 	this.on('alert', msg=>{
 		if(!msg){
-			$('.stream__notifer').removeClass('alert');
-			$('.stream__notifer').text('');
+			$('.stream__notifer').removeClass('alert').fadeIn(500);
+			setTimeout(_=>{ 
+				$('.stream__notifer').text('')	
+			},600)
 			this.exec({
 				audio: {
 					name: 'warn',
@@ -193,8 +236,8 @@ this.on('info', msg=>{
 	$('.stream__notifer').text(msg);
 	this.exec({ sound: 'item' })
 setTimeout(_=>{
-	$('.stream__notifer').removeClass('info');
-	$('.stream__notifer').text('');	
+	$('.stream__notifer').removeClass('info').fadeIn().text('');
+	//$('.stream__notifer').text('');	
 },5000)
 
 })
@@ -258,3 +301,70 @@ store[data.name][data.action]();
 	})
 };
 
+
+
+function logoVnjson (){
+
+
+
+//var assets = this.current.assets;
+var i = 0;
+
+var load = ()=>{
+	
+	var assets = this.TREE.$root.assets;
+
+	
+	if(/.png|.jpg/i.test( assets[i].url)){
+	
+  let img = new Image();
+       img.src =  assets[i].url;
+       img.onload = ()=>{
+            
+       		
+             if( assets.length-1>=++i){
+             
+             		load()
+             }
+       };
+  } 
+}
+window.addEventListener("load", _=>{
+	load()
+  
+});
+/*
+this.on('init', scene=>{
+
+//background-image: url(../assets/characters/napoleon.png);	
+	load()
+})*/
+
+
+
+
+this.on('logo', name=>{
+
+$('.stream__character-logo').css('background-image', `url('${this.getAssetByName(name).url}')` )
+$('.stream__character-logo').css('transition','background-image 0.5s')
+})
+
+}
+
+
+function inputVnjson (){
+//$('.screen__game-menu').html('');	
+//$('.screen__game-menu').show();
+
+	this.on('input', e=>{
+		if(e){
+			//$('.screen__game-menu').html('');
+		
+			$('stream__character-name').html('<input type="text" placeholder="В ведите имя">')
+
+		}else{
+			//$('.screen__game-menu').html('');
+		}
+	})
+
+}
