@@ -4,10 +4,11 @@
   "description": "Vnjson text quest template",
   "main": "gulpfile.js",
   "scripts": {
-    "server": "gulp"
+    "start": "gulp"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.7.0",
     "scenes-to-json": "^0.7.0"
   },

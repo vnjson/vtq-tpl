@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<title>vtq-tpl</title>
+	<link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="./css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/main.css">
+	<!--<link rel="stylesheet" type="text/css" href="./css/screen__stream.css">
+	-->
+	<script src="./app/lib.js"></script>
+	<script src="./app/plugins.js"></script>
+</head>
+<body>
+
+<div class="wrapper">
+
+<div id="screen">
+
+
+<!--------------stream-------------->
+			<div class="scene scene__stream">
+				
+				<!----------dialog-box-------------->
+				<div class="show show__dialog-box">
+						<div class="character">
+								<div class="character__logo"></div>
+								<div class="character__name"></div>
+						</div>
+						<div class="reply"></div>
+						<div class="game-menu"></div>
+				</div>
+				<!--put items-->
+				<div class="show show__items" id="activeItems">
+					
+				</div>
+				<aside class="stream-aside">
+					<div class="stream-aside__notifer"></div>
+					<div class="stream-aside__wiki"></div>
+					<div class="stream-aside__items" id="userItems"></div>
+				</aside>	
+			</div>
+
+<!--------------game-over-------------->			
+			<div class="scene scene__game-over">
+					<h3>Конец игры</h3>
+			</div>
+</div>
+<footer>
+	<p>Powered by <a href="https://github.com/vnjson/vnjson.js">Vnjson</a></p>
+	<p>Characters icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+
+</footer>
+</div>
+
+	<script src="./init.js"></script>
+</body>
+</html>

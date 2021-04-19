@@ -1,0 +1,310 @@
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html, body{
+	user-select: none;
+	overflow: hidden;
+
+	background-image: url(../assets/background-1.jpg);
+	background-size: cover;
+
+}
+
+
+.wrapper{
+	font-family: 'Jura';
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.8);
+	font-size: 16px;
+}
+
+
+#screen{
+	background-color: #030623;
+	opacity: 0.8;
+	width: 900px;
+	height: 60vh;
+	border: 3.5px solid #124548;
+	padding: 10px;
+}
+.main-menu__item-wrapper{
+
+
+	margin: 23% auto;
+
+}
+
+.main-menu__item{
+	font-size: 2em;
+	margin: 20px 20%;
+	text-align: center;
+	cursor: pointer;
+	padding: 7px;
+	color: darkcyan;
+	background-color: #082430;
+	border: 1px solid #124548; 
+	border-left: 5px solid #124548; 
+}
+.main-menu__item:hover,
+.main-menu__item:active{
+	background-color: #030623;
+	border: 1px solid #124548; 
+	border-left: 5px solid #124548; 
+}
+.scene,
+.show,
+.show__dialog-box,
+.show__items,
+.game-menu{
+	display: none;
+}
+
+.scene{
+	position: relative;
+	height: 100%;
+}
+.show{
+	width: 70%;
+
+}
+
+/**
+ * SCREENS
+ */
+
+
+/**
+ * main-menu
+ */
+
+
+.scene__main-menu{
+	display: none;
+}
+
+/**
+ * Game over
+ */
+.scene__game-over{
+	display: none;
+}
+
+.scene__game-over h3{
+	text-align: center;
+	margin: 23% auto;
+	font-size: 3em;
+	color: red;
+}
+
+@font-face {
+	font-family: "Jura"; 
+	src: url('../fonts/Jura-VariableFont_wght.ttf') format("truetype"); 
+	font-style: normal; 
+	font-weight: normal; 
+} 
+		
+/**
+10px from the top of the element
+20px from the right of the element
+30px from the bottom of the element
+40px from the left of the element
+ */
+
+footer{
+	position: absolute;
+	bottom: 0;
+	width: 70%;
+	color: grey;
+	padding-bottom: 15px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+}
+footer p{
+
+	/*margin: 7px;*/
+}
+footer a{
+	color: grey;
+}
+
+footer a:hover{
+	color: darkcyan;
+}
+
+/**
+ * aside
+ */
+
+.stream-aside{
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 30%;
+	height: 100%;
+	font-size: 1.3em;
+	display: block;
+	transition: 1s;
+	color: darkcyan;
+
+}
+.stream-aside__notifer{
+	width: 96%;
+	height: 17%;
+	border: 2px solid #082430;
+	margin-bottom: 10px;
+	padding: 10px;
+}
+.stream-aside__wiki{
+	margin-bottom: 10px;
+	width: 96%;
+	height: 200px;
+	border: 2px solid #082430;	
+	padding: 10px;
+}
+
+.stream-aside__items{
+	width: 96%;
+	height: 180px;
+	border: 2px solid #082430;
+	margin-bottom: 10px;
+
+}
+
+
+.user-item{
+	cursor: -webkit-grab;
+	cursor: grab;
+	width: 3vw;
+	height: 3vw;
+	margin: 5px;
+	border: 1px solid #082430;
+	color: grey;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1em;
+}
+.user-item:hover{
+	background-color: #082430;
+}
+.user-item:active{
+	cursor: -webkit-grabbing;
+	cursor: grabbing;
+}
+
+/**
+ * character
+ */
+.character{
+	margin-right: 10px;
+	border: 2px solid #082430;
+	padding: 10px;
+
+}
+
+.character__name{
+	display: inline-block;
+	font-size: 2.5em;
+
+	margin-left: 10px;
+}
+.character__logo{
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	border: 2px solid #082430;
+	padding: 5px;
+	background-repeat: no-repeat;
+	background-size: 45px 45px;
+}
+
+/**
+ * reply
+ */
+.reply{
+	height: 200px;
+	margin-right: 10px;
+	border: 2px solid #082430;
+	margin-top: 10px;
+	cursor: pointer;
+	padding: 10px;
+	font-size: 1.4em;
+}
+
+.reply i{
+
+	font-style: normal;
+	color: skyblue;
+}
+
+/**
+ * game-menu
+ */
+
+.game-menu{
+	font-size: 1.3em;
+	margin-right: 10px;
+}
+
+.game-menu__menu-item{
+	cursor: pointer;
+	margin: 10px 0;
+	padding: 7px;
+	color: darkcyan;
+
+	background-color: #082430;
+	border: 1px solid #124548; 
+	border-left: 5px solid #124548; 
+}
+.game-menu__menu-item:hover,
+.game-menu__menu-item:active{
+	background-color: #030623;
+	border: 1px solid #124548; 
+	border-left: 5px solid #124548; 
+
+}
+
+
+input[type='text']{
+	outline:none;
+	display: block;
+	font-size: 1.2em;
+	margin-top: 10px;
+	width: 300px;
+	padding: 7px;
+	color: skyblue;
+	background-color: #082430;
+	border: 1px solid #124548; 
+	border-left: 5px solid skyblue; 
+}
+
+
+
+
+/**
+ * plugin ALERT
+ */
+@keyframes alert {
+ 0% { border: 2.5px solid #124548; }
+ 100% { border: 2.5px solid red; }
+}
+
+.alert{
+	color: red;
+	animation: alert 0.55s ease-in-out infinite;	
+	animation-direction: alternate;	
+}
+.info{
+	color: skyblue;
+	font-size: 0.9em;
+}
