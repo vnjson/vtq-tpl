@@ -3,7 +3,7 @@
 
 
 # Demo
-[__`This dist`__](https://vnjson.github.io/vtq-tpl/dist/)
+[__`This dist`__](https://vnjson.github.io/vtq-tpl/game/dist/)
 
 # Download
 [__`vtq-tpl.zip`__](https://github.com/vnjson/vtq/archive/main.zip)
