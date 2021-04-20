@@ -80,37 +80,6 @@ this.on('setTree', _=>{
 
 }
 
-
-
-/**
- * character
- */
-
-function characterVnjson (){
-
-var renderLogo = character=>{
-			$('.character__logo').css('background-image', `url('${this.getAssetByName(character.logo).url}')` )
-			$('.character__logo').css('transition','background-image 0.1s')
-
-}
-//{{\D*\S.*}}
-
-this.on('character', (character, reply)=>{
-	if(character.logo){
-		renderLogo(character)
-	}
-	if(!character.name){
-		$('.character__name').html('')
-		$('.reply').html(reply)
-							 .css('color', character.replyColor);
-	}else{
-		$('.character__name').html(character.name).css('color', character.nameColor).css('transition','background-image 0.5s')
-		$('.reply').html(reply)
-							 .css('color', character.replyColor)
-	}
-});
-
-}
 /**
  * audio
  */
@@ -137,6 +106,46 @@ var audio = data=>{
 		this.$store[data].play();
 	})
 };
+
+function characterVnjson (){
+
+var renderLogo = character=>{
+			$('.character__logo').css('background-image', `url('${this.getAssetByName(character.logo).url}')` )
+			$('.character__logo').css('transition','background-image 0.1s')
+
+}
+var re = new RegExp(/{{\D*\S.*}}/,'i');
+var replyParse = (reply)=>{
+
+			if(re.test(reply)){
+				let str = reply.match(re)[0];
+
+				let keyWord = str.split('{{')[1].split('}}')[0]
+
+				return reply.replace(str, `<i>${this.current.data[keyWord]}</i>`)
+			}
+			else{
+				return reply;
+			}
+			
+}
+
+this.on('character', (character, reply)=>{
+	if(character.logo){
+		renderLogo(character)
+	}
+	if(!character.name){
+		$('.character__name').html('')
+		$('.reply').html(replyParse(reply))
+							 .css('color', character.replyColor);
+	}else{
+		$('.character__name').html(character.name).css('color', character.nameColor).css('transition','background-image 0.5s')
+		$('.reply').html(replyParse(reply))
+							 .css('color', character.replyColor)
+	}
+});
+
+}
 function debugVnjson (){
 
 
@@ -246,6 +255,9 @@ if(window.location.hash!==''){
 
 function inputVnjson (){
 
+var setName;
+
+
 function input (menuObj){
 $('.game-menu').html('');	
 $('.game-menu').show();
@@ -254,11 +266,14 @@ $('.game-menu').show();
 	for(var [label, menuItem ] of Object.entries(menuObj)){
 		
 		if(label==='$'){
-			this.emit('character', this.getCharacterById(label), `${menuItem}<b><input type="text" id="userName">`)
+			this.emit('character', this.getCharacterById(label), `${menuItem}<b><input type="text" id="userData">`)
 		}
 		else if(this.getCharacterById(label)){
 
-			this.emit('character', this.getCharacterById(label), `${menuItem}<b><input type="text" id="userName">`)
+			this.emit('character', this.getCharacterById(label), `${menuItem}<b><input type="text" id="userData">`)
+		}
+		else if(label==='set'){
+			setName = menuItem
 		}
 		else{
 
@@ -270,15 +285,18 @@ $('.game-menu').show();
 
 var handler = e=>{
   e.preventDefault();
-  var userName = $('#userName').val();
+  var userData = $('#userData').val();
 
-  if(userName!==''){
-  	
-  	this.getCharacterById('$').name = userName;
-  	this.current.data.userName = userName;
-  	this.emit('jump', e.target.dataset.label);
-    $('.game-menu').hide();
-    $( ".game-menu" ).off( "click", handler);
+  if(userData!==''){
+  	this.current.data[setName] = userData
+
+  	if(setName==='userName'){
+  		this.getCharacterById('$').name = this.current.data.userName;
+
+  		this.emit('jump', e.target.dataset.label);
+    	$('.game-menu').hide();
+    	$( ".game-menu" ).off( "click", handler);
+  	}
   }
 
 }
@@ -305,6 +323,44 @@ $( ".game-menu__menu-item").mouseover(_=>{
 
 this.on('input', input);
 
+
+
+}
+function itemVnjson (){
+
+Sortable.create(userItems, {
+  group: {
+    name: 'userItems',
+    pull: true
+  },
+  animation: 100
+});
+
+Sortable.create(activeItems, {
+  group: {
+    name: 'activeItems',
+    put: ['userItems']
+  },
+  animation: 100
+});
+
+
+var userArr = [];
+
+function item (id){
+
+	
+		if(Array.isArray(id)){
+			id.map(item=>{
+				$('#userItems').append(this.TREE.$root.store[item])
+			})
+		}else{
+			$('#userItems').append(this.TREE.$root.store[id])
+		}
+
+};
+
+this.on('item', item);
 
 
 }
@@ -364,44 +420,6 @@ if(!this.ctx.hasOwnProperty('menu')||!this.ctx.hasOwnProperty('input')){
 }
 
 })
-
-}
-function itemVnjson (){
-
-Sortable.create(userItems, {
-  group: {
-    name: 'userItems',
-    pull: true
-  },
-  animation: 100
-});
-
-Sortable.create(activeItems, {
-  group: {
-    name: 'activeItems',
-    put: ['userItems']
-  },
-  animation: 100
-});
-
-
-var userArr = [];
-
-function item (id){
-
-	
-		if(Array.isArray(id)){
-			id.map(item=>{
-				$('#userItems').append(this.TREE.$root.store[item])
-			})
-		}else{
-			$('#userItems').append(this.TREE.$root.store[id])
-		}
-
-};
-
-this.on('item', item);
-
 
 }
 
@@ -467,45 +485,6 @@ this.on('menu', menu);
 
 }
 /**
- * @scene
- */
-
-
-function sceneVnjson(){
-
-function isValid (screenName){
-
-let rules = {
-  screenName: 'required|string'
-};
-var validation = new Validator({screenName}, rules);
-
-if(validation.fails()){
-	let error = validation.errors.first('screenName');
-	console.error(error)
-
-}
-
-return validation.passes();
-}
-
-	var prevScreen;
-	var prevShow;
-	this.on('scene', function (screenName){
-		if(isValid(screenName)){
-				if(prevScreen){	
-					$(`.scene__${prevScreen}`).hide();
-				}
-				this.current.render.screen = screenName;
-				$(`.scene__${screenName}`).show();
-					prevScreen = screenName;
-		}
-	});
-
-
-
-}
-/**
  * notify
  */
 function notifyVnjson (){
@@ -547,8 +526,6 @@ function notifyVnjson (){
 
 this.on('info', msg=>{
 
-	
-
 	$('.stream-aside__notifer').addClass('info')
 	$('.stream-aside__notifer').text(msg);
 	this.emit('sound', 'item')
@@ -560,31 +537,47 @@ setTimeout(_=>{
 
 })
 
-this.on('character', (character, reply)=>{
+}
+
 /**
- * Получаем элементы <i></i>
+ * @scene
  */
-var re = new RegExp(/<i>\D*\S.*<\/i>/,'i')
 
-		if(re.test(reply)){
-			let str1 = reply.match(re)[0];
-			let str2 = str1.match(/[^<i>]\D*\S.*[^<\/i>]/)[0];
-			this.emit('wiki', str2)
-		}
 
-})
+function sceneVnjson(){
 
-this.on('wiki', msg=>{
-	var wiki = this.TREE.$root.wiki
-	$('.stream-aside__wiki')
-					.html(`<p class='info'>${msg}</p>`)
-					.append(`<p>${wiki[msg]}</p>`)
+function isValid (screenName){
 
-});
+let rules = {
+  screenName: 'required|string'
+};
+var validation = new Validator({screenName}, rules);
 
+if(validation.fails()){
+	let error = validation.errors.first('screenName');
+	console.error(error)
 
 }
 
+return validation.passes();
+}
+
+	var prevScreen;
+	var prevShow;
+	this.on('scene', function (screenName){
+		if(isValid(screenName)){
+				if(prevScreen){	
+					$(`.scene__${prevScreen}`).hide();
+				}
+				this.current.render.screen = screenName;
+				$(`.scene__${screenName}`).show();
+					prevScreen = screenName;
+		}
+	});
+
+
+
+}
 function showVnjson(){
 	var prevScreen;
 	var prevShow;
@@ -601,5 +594,37 @@ function showVnjson(){
 
 
 	this.on('show', show);
+
+}
+function wikiVnjson(){
+
+
+this.on('character', (character, reply)=>{
+/**
+ * Получаем элементы <i></i>
+ */
+var re = new RegExp(/<i>\D*\S.*<\/i>/,'i')
+
+		if(re.test(reply)){
+			let str1 = reply.match(re)[0];
+			let str2 = str1.match(/[^<i>]\D*\S.*[^<\/i>]/)[0];
+			this.emit('wiki', str2)
+		}
+
+})
+
+this.on('wiki', key=>{
+	var wiki = this.TREE.$root.wiki;
+	wiki.map(item=>{
+		if(item.key===key){
+				$('.stream-aside__wiki')
+					.html(`<p class='info'>${item.title}</p>`)
+					.append(`<p>${item.text}</p>`)
+		}
+	})
+
+
+});
+
 
 }
