@@ -21,6 +21,8 @@ var audio = data=>{
 
 	this.on('audio', audio);
 	this.on('sound', data=>{
+		this.$store[data].volume(0.05)
 		this.$store[data].play();
+
 	})
 };

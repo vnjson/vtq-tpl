@@ -23,6 +23,7 @@ var replyParse = (reply)=>{
 }
 
 this.on('character', (character, reply)=>{
+				
 	if(character.logo){
 		renderLogo(character)
 	}

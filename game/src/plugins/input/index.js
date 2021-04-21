@@ -19,7 +19,6 @@ $('.game-menu').show();
 			this.emit('character', this.getCharacterById(label), `${menuItem}<b><input type="text" id="userData">`)
 		}
 		else if(this.getCharacterById(label)){
-
 			this.emit('character', this.getCharacterById(label), `${menuItem}<b><input type="text" id="userData">`)
 		}
 		else if(label==='set'){

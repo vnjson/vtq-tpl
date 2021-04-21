@@ -80,32 +80,6 @@ this.on('setTree', _=>{
 
 }
 
-/**
- * audio
- */
-function audioVnjson (){
-
-var audio = data=>{
-
-	if(typeof data==='string'){
-	
-		this.$store[data].play();
-
-	}
-	else{
-		this.$store[data.name].rate(data.speed||1);
-		this.$store[data.name].loop(data.loop||false);
-		this.$store[data.name].volume(data.volume||1)
-		this.$store[data.name][data.action]();
-	}
-
-}
-
-	this.on('audio', audio);
-	this.on('sound', data=>{
-		this.$store[data].play();
-	})
-};
 
 function characterVnjson (){
 
@@ -131,6 +105,7 @@ var replyParse = (reply)=>{
 }
 
 this.on('character', (character, reply)=>{
+				
 	if(character.logo){
 		renderLogo(character)
 	}
@@ -146,6 +121,34 @@ this.on('character', (character, reply)=>{
 });
 
 }
+/**
+ * audio
+ */
+function audioVnjson (){
+
+var audio = data=>{
+
+	if(typeof data==='string'){
+	
+		this.$store[data].play();
+
+	}
+	else{
+		this.$store[data.name].rate(data.speed||1);
+		this.$store[data.name].loop(data.loop||false);
+		this.$store[data.name].volume(data.volume||1)
+		this.$store[data.name][data.action]();
+	}
+
+}
+
+	this.on('audio', audio);
+	this.on('sound', data=>{
+		this.$store[data].volume(0.05)
+		this.$store[data].play();
+
+	})
+};
 function debugVnjson (){
 
 
@@ -248,6 +251,38 @@ if(window.location.hash!==''){
 
 
 }
+function mainMenuVnjson (){
+
+let scene = `<div class="scene scene__main-menu">
+								<div class="main-menu__item-wrapper"></div>
+						</div>`;
+
+$('#screen').append(scene)
+
+this.emit('scene', 'main-menu')
+
+
+function mainMenu (data){
+	for(var [label, text ] of Object.entries(data)){
+			$('.scene__main-menu').append(`<div class='main-menu__item' data-label="${label}">${text}</div>`)
+	}
+
+var clickHundler = e=>{
+  this.emit('jump', e.target.dataset.label)
+
+}
+
+$( ".main-menu__item" ).on( "click", clickHundler);
+
+
+}
+
+this.on('mainMenu', mainMenu)
+
+
+
+
+}
 
 /**
  * Input
@@ -269,7 +304,6 @@ $('.game-menu').show();
 			this.emit('character', this.getCharacterById(label), `${menuItem}<b><input type="text" id="userData">`)
 		}
 		else if(this.getCharacterById(label)){
-
 			this.emit('character', this.getCharacterById(label), `${menuItem}<b><input type="text" id="userData">`)
 		}
 		else if(label==='set'){
@@ -364,64 +398,6 @@ this.on('item', item);
 
 
 }
-function mainMenuVnjson (){
-
-let scene = `<div class="scene scene__main-menu">
-								<div class="main-menu__item-wrapper"></div>
-						</div>`;
-
-$('#screen').append(scene)
-
-this.emit('scene', 'main-menu')
-
-
-function mainMenu (data){
-	for(var [label, text ] of Object.entries(data)){
-			$('.scene__main-menu').append(`<div class='main-menu__item' data-label="${label}">${text}</div>`)
-	}
-
-var clickHundler = e=>{
-  this.emit('jump', e.target.dataset.label)
-
-}
-
-$( ".main-menu__item" ).on( "click", clickHundler);
-
-
-}
-
-this.on('mainMenu', mainMenu)
-
-
-
-
-}
-
-
-function memoryCardVnjson (){
-
-//this.emit('stateSave')
-this.on('saveData', _=>{
-	store(this.current);
-})
-
-//this.emit('stateLoad') debug
-this.on('loadData', _=>{
-
-
-this.current = store.getAll();
-
-this.emit('scene', this.current.render.screen)
-
-this.emit('jump', [this.current.sceneName, this.current.labelName].join('.'))
-
-if(!this.ctx.hasOwnProperty('menu')||!this.ctx.hasOwnProperty('input')){
-	$('.game-menu').hide();
-}
-
-})
-
-}
 
 /**
  * menu
@@ -438,13 +414,12 @@ $('.game-menu').show();
 
 
 	for(var [label, menuItem ] of Object.entries(menuObj)){
-		
-		if(label==='$'){
-			this.emit('character', this.getCharacterById(label), menuItem)
-		}
-		else if(this.getCharacterById(label)){
-
-			this.emit('character', this.getCharacterById(label), menuItem)
+		var character = this.getCharacterById(label)
+		if(character){
+			if(label==='$'){
+				character.name = this.current.data.userName;
+			}
+			this.emit('character', character, menuItem)
 		}
 		else{
 
@@ -498,10 +473,7 @@ function notifyVnjson (){
 			this.exec({
 				audio: {
 					name: 'warn',
-					action: 'stop',
-					volume: 0.1,
-					speed: 0.7,
-					loop: true
+					action: 'stop'
 				}
 			})
 
@@ -513,7 +485,7 @@ function notifyVnjson (){
 				audio: {
 					name: 'warn',
 					action: 'play',
-					volume: 0.1,
+					volume: 0.05,
 					speed: 0.7,
 					loop: true
 				}
@@ -533,49 +505,36 @@ this.on('info', msg=>{
 setTimeout(_=>{
 	$('.stream-aside__notifer').removeClass('info').fadeIn().text('');
 	//$('.stream__notifer').text('');	
-},5000)
+},2000)
 
 })
 
 }
 
-/**
- * @scene
- */
 
 
-function sceneVnjson(){
+function memoryCardVnjson (){
 
-function isValid (screenName){
+//this.emit('stateSave')
+this.on('saveData', _=>{
+	store(this.current);
+})
 
-let rules = {
-  screenName: 'required|string'
-};
-var validation = new Validator({screenName}, rules);
+//this.emit('stateLoad') debug
+this.on('loadData', _=>{
 
-if(validation.fails()){
-	let error = validation.errors.first('screenName');
-	console.error(error)
 
+this.current = store.getAll();
+
+this.emit('scene', this.current.render.screen)
+
+this.emit('jump', [this.current.sceneName, this.current.labelName].join('.'))
+
+if(!this.ctx.hasOwnProperty('menu')||!this.ctx.hasOwnProperty('input')){
+	$('.game-menu').hide();
 }
 
-return validation.passes();
-}
-
-	var prevScreen;
-	var prevShow;
-	this.on('scene', function (screenName){
-		if(isValid(screenName)){
-				if(prevScreen){	
-					$(`.scene__${prevScreen}`).hide();
-				}
-				this.current.render.screen = screenName;
-				$(`.scene__${screenName}`).show();
-					prevScreen = screenName;
-		}
-	});
-
-
+})
 
 }
 function showVnjson(){
@@ -625,6 +584,45 @@ this.on('wiki', key=>{
 
 
 });
+
+
+}
+/**
+ * @scene
+ */
+
+
+function sceneVnjson(){
+
+function isValid (screenName){
+
+let rules = {
+  screenName: 'required|string'
+};
+var validation = new Validator({screenName}, rules);
+
+if(validation.fails()){
+	let error = validation.errors.first('screenName');
+	console.error(error)
+
+}
+
+return validation.passes();
+}
+
+	var prevScreen;
+	var prevShow;
+	this.on('scene', function (screenName){
+		if(isValid(screenName)){
+				if(prevScreen){	
+					$(`.scene__${prevScreen}`).hide();
+				}
+				this.current.render.screen = screenName;
+				$(`.scene__${screenName}`).show();
+					prevScreen = screenName;
+		}
+	});
+
 
 
 }

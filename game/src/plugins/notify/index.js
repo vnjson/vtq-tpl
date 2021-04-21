@@ -12,10 +12,7 @@ function notifyVnjson (){
 			this.exec({
 				audio: {
 					name: 'warn',
-					action: 'stop',
-					volume: 0.1,
-					speed: 0.7,
-					loop: true
+					action: 'stop'
 				}
 			})
 
@@ -27,7 +24,7 @@ function notifyVnjson (){
 				audio: {
 					name: 'warn',
 					action: 'play',
-					volume: 0.1,
+					volume: 0.05,
 					speed: 0.7,
 					loop: true
 				}
@@ -47,7 +44,7 @@ this.on('info', msg=>{
 setTimeout(_=>{
 	$('.stream-aside__notifer').removeClass('info').fadeIn().text('');
 	//$('.stream__notifer').text('');	
-},5000)
+},2000)
 
 })
 

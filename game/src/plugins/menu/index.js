@@ -14,13 +14,12 @@ $('.game-menu').show();
 
 
 	for(var [label, menuItem ] of Object.entries(menuObj)){
-		
-		if(label==='$'){
-			this.emit('character', this.getCharacterById(label), menuItem)
-		}
-		else if(this.getCharacterById(label)){
-
-			this.emit('character', this.getCharacterById(label), menuItem)
+		var character = this.getCharacterById(label)
+		if(character){
+			if(label==='$'){
+				character.name = this.current.data.userName;
+			}
+			this.emit('character', character, menuItem)
 		}
 		else{
 
