@@ -80,6 +80,34 @@ this.on('setTree', _=>{
 
 }
 
+/**
+ * audio
+ */
+function audioVnjson (){
+
+var audio = data=>{
+
+	if(typeof data==='string'){
+	
+		this.$store[data].play();
+
+	}
+	else{
+		this.$store[data.name].rate(data.speed||1);
+		this.$store[data.name].loop(data.loop||false);
+		this.$store[data.name].volume(data.volume||1)
+		this.$store[data.name][data.action]();
+	}
+
+}
+
+	this.on('audio', audio);
+	this.on('sound', data=>{
+		this.$store[data].volume(0.05)
+		this.$store[data].play();
+
+	})
+};
 
 function characterVnjson (){
 
@@ -121,34 +149,6 @@ this.on('character', (character, reply)=>{
 });
 
 }
-/**
- * audio
- */
-function audioVnjson (){
-
-var audio = data=>{
-
-	if(typeof data==='string'){
-	
-		this.$store[data].play();
-
-	}
-	else{
-		this.$store[data.name].rate(data.speed||1);
-		this.$store[data.name].loop(data.loop||false);
-		this.$store[data.name].volume(data.volume||1)
-		this.$store[data.name][data.action]();
-	}
-
-}
-
-	this.on('audio', audio);
-	this.on('sound', data=>{
-		this.$store[data].volume(0.05)
-		this.$store[data].play();
-
-	})
-};
 function debugVnjson (){
 
 
@@ -251,38 +251,6 @@ if(window.location.hash!==''){
 
 
 }
-function mainMenuVnjson (){
-
-let scene = `<div class="scene scene__main-menu">
-								<div class="main-menu__item-wrapper"></div>
-						</div>`;
-
-$('#screen').append(scene)
-
-this.emit('scene', 'main-menu')
-
-
-function mainMenu (data){
-	for(var [label, text ] of Object.entries(data)){
-			$('.scene__main-menu').append(`<div class='main-menu__item' data-label="${label}">${text}</div>`)
-	}
-
-var clickHundler = e=>{
-  this.emit('jump', e.target.dataset.label)
-
-}
-
-$( ".main-menu__item" ).on( "click", clickHundler);
-
-
-}
-
-this.on('mainMenu', mainMenu)
-
-
-
-
-}
 
 /**
  * Input
@@ -328,8 +296,9 @@ var handler = e=>{
   		this.getCharacterById('$').name = this.current.data.userName;
 
   		this.emit('jump', e.target.dataset.label);
+    	
+    	$(".game-menu" ).off( "click", handler);
     	$('.game-menu').hide();
-    	$( ".game-menu" ).off( "click", handler);
   	}
   }
 
@@ -398,6 +367,64 @@ this.on('item', item);
 
 
 }
+function mainMenuVnjson (){
+
+let scene = `<div class="scene scene__main-menu">
+								<div class="main-menu__item-wrapper"></div>
+						</div>`;
+
+$('#screen').append(scene)
+
+this.emit('scene', 'main-menu')
+
+
+function mainMenu (data){
+	for(var [label, text ] of Object.entries(data)){
+			$('.scene__main-menu').append(`<div class='main-menu__item' data-label="${label}">${text}</div>`)
+	}
+
+var clickHundler = e=>{
+  this.emit('jump', e.target.dataset.label)
+
+}
+
+$( ".main-menu__item" ).on( "click", clickHundler);
+
+
+}
+
+this.on('mainMenu', mainMenu)
+
+
+
+
+}
+
+
+function memoryCardVnjson (){
+
+//this.emit('stateSave')
+this.on('saveData', _=>{
+	store(this.current);
+})
+
+//this.emit('stateLoad') debug
+this.on('loadData', _=>{
+
+
+this.current = store.getAll();
+
+this.emit('scene', this.current.render.screen)
+
+this.emit('jump', [this.current.sceneName, this.current.labelName].join('.'))
+
+if(!this.ctx.hasOwnProperty('menu')||!this.ctx.hasOwnProperty('input')){
+	$('.game-menu').hide();
+}
+
+})
+
+}
 
 /**
  * menu
@@ -431,11 +458,13 @@ $('.game-menu').show();
 
 
 var clickHundler = e=>{
+
     e.preventDefault();
 
     this.emit('jump', e.target.dataset.label)
-    $('.game-menu').hide();
+   
     $('.game-menu').off( "click", clickHundler)
+    $('.game-menu').hide();
 }
 
 
@@ -511,30 +540,43 @@ setTimeout(_=>{
 
 }
 
+/**
+ * @scene
+ */
 
 
-function memoryCardVnjson (){
+function sceneVnjson(){
 
-//this.emit('stateSave')
-this.on('saveData', _=>{
-	store(this.current);
-})
+function isValid (screenName){
 
-//this.emit('stateLoad') debug
-this.on('loadData', _=>{
+let rules = {
+  screenName: 'required|string'
+};
+var validation = new Validator({screenName}, rules);
 
+if(validation.fails()){
+	let error = validation.errors.first('screenName');
+	console.error(error)
 
-this.current = store.getAll();
-
-this.emit('scene', this.current.render.screen)
-
-this.emit('jump', [this.current.sceneName, this.current.labelName].join('.'))
-
-if(!this.ctx.hasOwnProperty('menu')||!this.ctx.hasOwnProperty('input')){
-	$('.game-menu').hide();
 }
 
-})
+return validation.passes();
+}
+
+	var prevScreen;
+	var prevShow;
+	this.on('scene', function (screenName){
+		if(isValid(screenName)){
+				if(prevScreen){	
+					$(`.scene__${prevScreen}`).hide();
+				}
+				this.current.render.screen = screenName;
+				$(`.scene__${screenName}`).show();
+					prevScreen = screenName;
+		}
+	});
+
+
 
 }
 function showVnjson(){
@@ -584,45 +626,6 @@ this.on('wiki', key=>{
 
 
 });
-
-
-}
-/**
- * @scene
- */
-
-
-function sceneVnjson(){
-
-function isValid (screenName){
-
-let rules = {
-  screenName: 'required|string'
-};
-var validation = new Validator({screenName}, rules);
-
-if(validation.fails()){
-	let error = validation.errors.first('screenName');
-	console.error(error)
-
-}
-
-return validation.passes();
-}
-
-	var prevScreen;
-	var prevShow;
-	this.on('scene', function (screenName){
-		if(isValid(screenName)){
-				if(prevScreen){	
-					$(`.scene__${prevScreen}`).hide();
-				}
-				this.current.render.screen = screenName;
-				$(`.scene__${screenName}`).show();
-					prevScreen = screenName;
-		}
-	});
-
 
 
 }

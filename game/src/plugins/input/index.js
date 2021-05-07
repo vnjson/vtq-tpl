@@ -43,8 +43,9 @@ var handler = e=>{
   		this.getCharacterById('$').name = this.current.data.userName;
 
   		this.emit('jump', e.target.dataset.label);
+    	
+    	$(".game-menu" ).off( "click", handler);
     	$('.game-menu').hide();
-    	$( ".game-menu" ).off( "click", handler);
   	}
   }
 

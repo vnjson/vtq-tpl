@@ -31,11 +31,13 @@ $('.game-menu').show();
 
 
 var clickHundler = e=>{
+
     e.preventDefault();
 
     this.emit('jump', e.target.dataset.label)
-    $('.game-menu').hide();
+   
     $('.game-menu').off( "click", clickHundler)
+    $('.game-menu').hide();
 }
 
 
